@@ -1,5 +1,5 @@
 import Text.ParserCombinators.Parsec
-import Data.Maybe ( isJust )
+import Data.Maybe ( isJust, fromMaybe )
 
 trousers = "traʊzəz"
 improvements = "ɪmpruːvmənts"
@@ -11,7 +11,23 @@ consonants :: [Char]
 consonants = "trzmprvns"
 
 data Syllables = Syllables { syllOnset :: String, syllNucleus :: String, syllCoda :: String, syllNext :: Maybe Syllables }
-                 deriving (Show, Eq)
+                 deriving (Eq)
+
+nullSign = "∅"
+nullReplace s = if null s then nullSign else s
+
+instance Show Syllables where
+  show a = let show' n ss = let indent = take n $ repeat ' '
+                                onset = nullReplace $ syllOnset ss
+                                coda = nullReplace $ syllCoda ss
+                                next = fromMaybe (indent ++ "|- " ++ nullSign) $
+                                       fmap (show' (n+1)) $ syllNext ss
+                            in indent ++ "|- " ++ onset ++ "\n" ++
+                               indent ++ "|- " ++ (syllNucleus ss) ++ "\n" ++
+                               indent ++ "|- " ++ coda ++ "\n" ++
+                               indent ++ "\\\n" ++
+                               next
+            in "\n" ++ show' 0 a
 
 type P = GenParser Char ()
 
