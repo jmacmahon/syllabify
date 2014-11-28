@@ -10,22 +10,6 @@ vowels = "aʊəɪuːə"
 consonants :: [Char]
 consonants = "trzmprvns"
 
-type Onset = String
-type Nucleus = String
-type Coda = String
-data Syllable = Syllable Onset Nucleus Coda deriving (Show, Eq)
-
-type Word = [Syllable]
-
-filledNucleusP :: Syllable -> Bool
-filledNucleusP (Syllable _ n _) = not (n == [])
-
-getFirstSyllable' :: String -> Syllable -> (String, Syllable)
-getFirstSyllable' ps s | filledNucleusP s = (ps, s)
-getFirstSyllable' (p:ps) (Syllable ons "" "") | p `elem` vowels = getFirstSyllable' ps (Syllable ons [p] "")
-                                              | otherwise       = getFirstSyllable' ps (Syllable (ons ++ [p]) "" "")
---getFirstSyllable' (p:ps) (Syllable ons "" "") | p `elem` 
-
 data Syllables = Syllables { syllOnset :: String, syllNucleus :: String, syllCoda :: String, syllNext :: Maybe Syllables }
                  deriving (Show, Eq)
 
