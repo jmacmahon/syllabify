@@ -1,3 +1,8 @@
+module Syllables ( parse
+                 , trousers
+                 , improvements
+                 ) where
+
 import Text.ParserCombinators.Parsec
 import Data.Maybe ( isJust, fromMaybe )
 
@@ -8,7 +13,19 @@ vowels :: [Char]
 vowels = "aʊəɪuːə"
 
 consonants :: [Char]
-consonants = "trzmprvns"
+consonants = "pbtdkgfvθðszʃʒʧʤmnŋlrwjh"
+
+singleOnsets = ["p", "b", "t", "d", "k", "g", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʧ", "ʤ", "m", "n", "l", "r", "w", "j", "h"]
+
+doubleOnsets = ["pl", "pr", "pj", "bl", "br", "bj", "tr", "tj", "tw", "dr", "dj", "dw", "kl", "kr", "kj", "kw", "gl", "gr", "gj", "gw", "mj", "nj", "fl", "fr", "fj", "vj", "θr", "θj", "θw", "sl", "sj", "sw", "sp", "st", "sk", "sm", "sn", "ʃr", "hj", "lj"]
+
+tripleOnsets = ["spl", "spr", "spj", "str", "stj", "skl", "skr", "skj", "skw"]
+
+validOnsets :: [[Char]]
+validOnsets = tripleOnsets ++ doubleOnsets ++ singleOnsets ++ [""]
+
+validOnsetsParsers :: [P String]
+validOnsetsParsers = map (try . string) validOnsets
 
 data Syllables = Syllables { syllOnset :: String, syllNucleus :: String, syllCoda :: String, syllNext :: Maybe Syllables }
                  deriving (Eq)
@@ -31,17 +48,12 @@ instance Show Syllables where
 
 type P = GenParser Char ()
 
--- TODO: cluster checking
 onset :: P String
-onset = many (noneOf vowels)
+onset = choice validOnsetsParsers
 
 -- TODO: dipthongs, syllabic consonants
 nucleus :: P String
 nucleus = many1 (oneOf vowels)
-
--- TODO: cluster checking
-coda :: P String
-coda = many (noneOf vowels)
 
 syllables :: P Syllables
 syllables = do ons <- onset
@@ -49,6 +61,7 @@ syllables = do ons <- onset
                (cod, next) <- coda' ""
                return $ Syllables ons nuc cod next
 
+-- TODO: cluster checking
 coda' :: String -> P (String, Maybe Syllables)
 coda' s = do end <- optionMaybe eof
              if isJust end
@@ -62,6 +75,4 @@ coda' s = do end <- optionMaybe eof
 
 -- parsec test
 one :: P String
-one = (<|> string "testing") $ try $ do s <- string "test"
-                                        _ <- eof
-                                        return s
+one = choice [(try $ (string "test" >>= \s -> eof >> return s)), try (string "testing")]
