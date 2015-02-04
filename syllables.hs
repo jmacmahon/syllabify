@@ -30,21 +30,19 @@ validOnsetsParsers = map (try . string) validOnsets
 data Syllables = Syllables { syllOnset :: String, syllNucleus :: String, syllCoda :: String, syllNext :: Maybe Syllables }
                  deriving (Eq)
 
+parseSyllables :: String -> Either ParseError Syllables
+parseSyllables = parse syllables ""
+
 nullSign = "∅"
 nullReplace s = if null s then nullSign else s
 
+showFirstSyllable (Syllables ons nuc cod _) =    "(" ++ nullReplace ons
+                                              ++ " " ++ nullReplace nuc
+                                              ++ " " ++ nullReplace cod
+                                              ++ ")"
 instance Show Syllables where
-  show a = let show' n ss = let indent = take n $ repeat ' '
-                                onset = nullReplace $ syllOnset ss
-                                coda = nullReplace $ syllCoda ss
-                                next = fromMaybe (indent ++ "|- " ++ nullSign) $
-                                       fmap (show' (n+1)) $ syllNext ss
-                            in indent ++ "|- " ++ onset ++ "\n" ++
-                               indent ++ "|- " ++ (syllNucleus ss) ++ "\n" ++
-                               indent ++ "|- " ++ coda ++ "\n" ++
-                               indent ++ "\\\n" ++
-                               next
-            in "\n" ++ show' 0 a
+  show s@(Syllables _ _ _ Nothing  ) = showFirstSyllable s
+  show s@(Syllables _ _ _ (Just ss)) = showFirstSyllable s ++ " " ++ show ss
 
 type P = GenParser Char ()
 
