@@ -8,6 +8,7 @@ import Data.Maybe ( isJust, fromMaybe )
 
 trousers = "traʊzəz"
 improvements = "ɪmpruːvmənts"
+glimpsed = "glɪmpst"
 
 vowels :: [Char]
 vowels = "aʊəɪuːə"
@@ -23,6 +24,17 @@ tripleOnsets = ["spl", "spr", "spj", "str", "stj", "skl", "skr", "skj", "skw"]
 
 validOnsets :: [[Char]]
 validOnsets = tripleOnsets ++ doubleOnsets ++ singleOnsets ++ [""]
+
+singleCodas = ["p", "b", "t", "d", "k", "g", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʧ", "ʤ", "m", "n", "ŋ", "l", "r"]
+
+doubleCodas = ["pt", "pθ", "ps", "tθ", "ts", "kt", "ks", "kθ", "bd", "bz", "dz", "gd", "gz", "ʧt", "ʤd", "mp", "md", "mf", "mθ", "mz", "nt", "nd", "nʧ", "nʤ", "nθ", "ns", "nz", "ŋd", "ŋk", "ŋz", "ŋθ", "lp", "lt", "lk", "lb", "ld", "lʧ", "lʤ", "lm", "ln", "lf", "lv", "lθ", "ls", "lz", "lʃ", "ft", "fθ", "fs", "vd", "vz", "θt", "θs", "ðd", "ðz", "sp", "st", "sk", "zd", "ʃt", "ʒd", "rp", "rb", "rt", "rd", "rt", "rʧ", "rʤ", "rk", "rg", "rm", "rn", "rl"]
+
+tripleCodas = ["pts", "pst", "pθs", "tst", "tθs", "dst", "kts", "kst", "ksθ", "kθs", "mpt", "mps", "mfs", "ntθ", "nts", "ndz", "nʧt", "nʤd", "nθs", "nst", "nzd", "ŋkt", "ŋkθ", "ŋks", "lpt", "lps", "lts", "lkt", "lks", "lbz", "ldz", "lʧt", "lʤd", "lmd", "lmz", "lnz", "lfs", "lfθ", "lvd", "lvz", "lθs", "lst", "fts", "fθs", "spt", "sps", "sts", "skt", "sks", "rmθ", "rpt", "rps", "rts", "rst", "rkt"]
+
+quadCodas = ["mpts", "mpst", "lkts", "lpts", "lfθs", "ksts", "ksθs", "ntθs"]
+
+validCodas :: [[Char]]
+validCodas = [""] ++ singleCodas ++ doubleCodas ++ tripleCodas ++ quadCodas
 
 validOnsetsParsers :: [P String]
 validOnsetsParsers = map (try . string) validOnsets
@@ -59,14 +71,19 @@ syllables = do ons <- onset
                (cod, next) <- coda' ""
                return $ Syllables ons nuc cod next
 
--- TODO: cluster checking
+validCodaParser :: (String, Maybe Syllables) -> P (String, Maybe Syllables)
+validCodaParser codaPair@(coda, ss) = let validCoda = coda `elem` validCodas
+                                      in if validCoda
+                                         then return codaPair
+                                         else fail "invalid coda somewhere"
+
 coda' :: String -> P (String, Maybe Syllables)
 coda' s = do end <- optionMaybe eof
              if isJust end
-               then return (s, Nothing)
+               then validCodaParser (s, Nothing)
                else do rest <- optionMaybe (try syllables)
                        if isJust rest
-                         then return (s, rest)
+                         then validCodaParser (s, rest)
                          else do c <- anyChar
                                  coda' (s ++ [c])
                        
