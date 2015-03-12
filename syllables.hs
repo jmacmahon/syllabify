@@ -81,11 +81,10 @@ syllsToList :: Syllables -> [(String, String, String, Stress)]
 syllsToList s@(Syllables ons nuc cod stress next) | isNothing next = [(ons, nuc, cod, stress)]
                                                   | otherwise      = (ons, nuc, cod, stress):(syllsToList $ fromJust next)
 
--- Convenience functions for the parser and representations
-parseSyllables :: String -> Either ParseError Syllables
-parseSyllables = parse syllables ""
-
 nullSign = "∅"
+primaryStress = 'ˈ'
+secondaryStress = 'ˌ'
+
 nullReplace s = if null s then nullSign else s
 
 showFirstSyllable (Syllables ons nuc cod stress _) = let stressMarker = if stress == Primary
@@ -102,26 +101,60 @@ instance Show Syllables where
   show s@(Syllables _ _ _ _ Nothing  ) = showFirstSyllable s
   show s@(Syllables _ _ _ _ (Just ss)) = showFirstSyllable s ++ " " ++ show ss
 
-type P = GenParser Char ()
+type P = GenParser Char SyllState
 
+data SyllState = SyllState { nextStress :: Stress
+                           } deriving (Show, Eq, Ord)
+zeroState :: SyllState
+zeroState = SyllState NoStress
+
+-- Convenience functions for the parser and representations
+parseSyllables :: String -> Either ParseError Syllables
+parseSyllables = runParser syllables zeroState ""
 
 -- THE PARSER
+traceParser :: String -> P ()
+traceParser prefix = do st <- getState
+                        input <- getInput
+                        let output = prefix ++ ": " ++ show input ++ " " ++ show st
+                        trace output $ return ()
+
+stressString :: String -> P String
+stressString st = let setStress c | c == primaryStress   = updateState $ \s -> s { nextStress = Primary }
+                                  | c == secondaryStress = updateState $ \s -> s { nextStress = Secondary }
+                                  | otherwise            = fail "stress setting went wrong.  this is a bug."
+
+                      checkStress :: P ()
+                      checkStress = do optionMaybe $ do s <- char primaryStress <|> char secondaryStress
+                                                        setStress s
+                                       return ()
+
+                      parseString :: String -> P String
+                      parseString ""     = do checkStress
+                                              return ""
+                      parseString (s:ss) = do checkStress
+                                              char s
+                                              rest <- parseString ss
+                                              return (s:rest)
+                  in parseString st
+
 onset' :: [String] -> P Syllables
 onset' []             = fail "invalid onset somewhere"
-onset' (onset:onsets) = let withOnset = do stress1 <- stress
-                                           string onset
-                                           afterOnset onset stress1
+onset' (onset:onsets) = let withOnset = do stressString onset
+                                           afterOnset onset
                         in do maybeParsed <- optionMaybe (try withOnset)
                               fromMaybe (onset' onsets) (fmap return maybeParsed)
 
-afterOnset :: String -> Stress -> P Syllables
-afterOnset ons stress1 = do stress2 <- stress
-                            nuc <- nucleus
-                            (cod, next) <- coda' ""
-                            let stress = if stress1 == NoStress
-                                         then stress2
-                                         else stress1
-                            return $ Syllables ons nuc cod stress next
+popStress :: P Stress
+popStress = do stress <- fmap nextStress getState
+               updateState $ \s -> s { nextStress = NoStress }
+               return stress
+
+afterOnset :: String -> P Syllables
+afterOnset ons = do nuc <- nucleus
+                    stress <- popStress
+                    (cod, next) <- coda' ""
+                    return $ Syllables ons nuc cod stress next
 
 nucleus :: P String
 nucleus = choice validNucleiParsers
