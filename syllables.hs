@@ -6,8 +6,9 @@ module Syllables ( parse
 import Text.ParserCombinators.Parsec
 import Data.Maybe ( isJust, fromMaybe, fromJust, isNothing )
 import Debug.Trace ( trace )
+import Control.Monad ( join )
 
--- Reading the CSV:
+-- Reading the CSV
 data Word a = Word { wordSpelling :: String, wordTranscription :: String, wordSyllables :: a }
             deriving (Show, Eq)
 
@@ -23,8 +24,7 @@ csvWord :: P (Word String)
 csvWord = do spelling <- many $ noneOf ",\n"
              char ','
              transcription <- many $ noneOf ",\n"
-             let strippedTrans = strip transcription
-             return $ Word (strip spelling) strippedTrans strippedTrans
+             return $ Word spelling transcription transcription
 
 readAndParse :: FilePath -> IO [Word (Either ParseError Syllables)]
 readAndParse fp = do ws <- readFile fp
@@ -32,17 +32,18 @@ readAndParse fp = do ws <- readFile fp
                          parsed = map (fmap parseSyllables) words
                      return parsed
 
--- Writing the CSV:
+-- Writing the CSV
 rowFormat :: Word (Either a Syllables) -> String
 rowFormat w = let syllFormatted = fmap (either (const "ERROR") show) w
-              in (wordSpelling syllFormatted) ++ "," ++ (wordTranscription syllFormatted) ++ "," ++ (wordSyllables syllFormatted)
-
-strip = lstrip . rstrip
-lstrip = dropWhile (`elem` " \t")
-rstrip = reverse . lstrip . reverse
+              in (wordSpelling syllFormatted)
+                 ++ "," ++ (wordTranscription syllFormatted)
+                 ++ "," ++ (wordSyllables syllFormatted)
 
 fromRight :: Either a b -> b
 fromRight (Right b) = b
+
+fromLeft :: Either a b -> a
+fromLeft (Left b) = b
 
 isLeft :: Either a b -> Bool
 isLeft (Left _) = True
@@ -55,8 +56,9 @@ glimpsed = "glˈɪmpst"
 table = "tɛɪbɫ̩"
 rhythm = "rɪðm̩"
 
--- STRESS MARKER
-stressMarker = 'ˈ'
+-- STRESS MARKERS SECTION
+primaryStress = 'ˈ'
+secondaryStress = 'ˌ'
 
 -- ONSETS SECTION
 singleOnsets = ["p", "b", "t", "d", "k", "g", "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "ʧ", "ʤ", "m", "n", "l", "r", "w", "j", "h"]
@@ -85,17 +87,18 @@ validCodas = [""] ++ singleCodas ++ doubleCodas ++ tripleCodas ++ quadCodas
 
 -- ADT for a Syllable.
 data Stress = NoStress | Secondary | Primary deriving (Eq, Show, Ord, Enum)
-data Syllables = Syllables { syllOnset :: String, syllNucleus :: String, syllCoda :: String, syllStress :: Stress, syllNext :: Maybe Syllables }
-                 deriving (Eq)
+data Syllables = Syllables { syllOnset :: String,
+                             syllNucleus :: String,
+                             syllCoda :: String,
+                             syllStress :: Stress,
+                             syllNext :: Maybe Syllables
+                           } deriving (Eq)
 
 syllsToList :: Syllables -> [(String, String, String, Stress)]
 syllsToList s@(Syllables ons nuc cod stress next) | isNothing next = [(ons, nuc, cod, stress)]
                                                   | otherwise      = (ons, nuc, cod, stress):(syllsToList $ fromJust next)
 
 nullSign = "∅"
-primaryStress = 'ˈ'
-secondaryStress = 'ˌ'
-
 nullReplace s = if null s then nullSign else s
 
 showFirstSyllable (Syllables ons nuc cod stress _) = let stressMarker = if stress == Primary
@@ -121,76 +124,57 @@ zeroState = SyllState NoStress
 
 -- Convenience functions for the parser and representations
 parseSyllables :: String -> Either ParseError Syllables
-parseSyllables = runParser syllables zeroState ""
+parseSyllables s = let parser :: P Syllables
+                       parser = do sylls <- syllables
+                                   maybe (fail "nothing to parse") return sylls
+                   in runParser parser zeroState "" s
 
--- THE PARSER
 traceParser :: String -> P ()
 traceParser prefix = do st <- getState
                         input <- getInput
                         let output = prefix ++ ": " ++ show input ++ " " ++ show st
                         trace output $ return ()
 
+-- THE PARSER
 stressString :: String -> P String
-stressString st = let setStress c | c == primaryStress   = updateState $ \s -> s { nextStress = Primary }
-                                  | c == secondaryStress = updateState $ \s -> s { nextStress = Secondary }
-                                  | otherwise            = fail "stress setting went wrong.  this is a bug."
+stressString = let setStress c | c == primaryStress   = updateState $ \s -> s { nextStress = Primary }
+                               | c == secondaryStress = updateState $ \s -> s { nextStress = Secondary }
+                               | otherwise            = fail "stress setting went wrong.  this is a bug."
 
-                      checkStress :: P ()
-                      checkStress = do optionMaybe $ do s <- char primaryStress <|> char secondaryStress
-                                                        setStress s
-                                       return ()
+                   checkStress :: P ()
+                   checkStress = do optionMaybe $ do s <- char primaryStress <|> char secondaryStress
+                                                     setStress s
+                                    return ()
 
-                      parseString :: String -> P String
-                      parseString ""     = do checkStress
-                                              return ""
-                      parseString (s:ss) = do checkStress
-                                              char s
-                                              rest <- parseString ss
-                                              return (s:rest)
-                  in parseString st
-
-onset' :: [String] -> P Syllables
-onset' []             = fail "invalid onset somewhere"
-onset' (onset:onsets) = let withOnset = do stressString onset
-                                           afterOnset onset
-                        in do maybeParsed <- optionMaybe (try withOnset)
-                              fromMaybe (onset' onsets) (fmap return maybeParsed)
+                   parseString :: String -> P String
+                   parseString ""     = do checkStress
+                                           return ""
+                   parseString (s:ss) = do checkStress
+                                           char s
+                                           rest <- parseString ss
+                                           return (s:rest)
+               in parseString
 
 popStress :: P Stress
 popStress = do stress <- fmap nextStress getState
                updateState $ \s -> s { nextStress = NoStress }
                return stress
 
-afterOnset :: String -> P Syllables
-afterOnset ons = do nuc <- nucleus
-                    stress <- popStress
-                    (cod, next) <- coda' ""
-                    return $ Syllables ons nuc cod stress next
+syllables :: P (Maybe Syllables)
+syllables = (fmap Just $ onset) <|> (eof >> return Nothing)
 
-nucleus :: P String
-nucleus = choice validNucleiParsers
+onset :: P Syllables
+onset = let onset' ons = try $ do stressString ons
+                                  nucleus ons
+        in choice $ map onset' validOnsets
 
-syllables :: P Syllables
-syllables = onset' validOnsets
+nucleus :: String -> P Syllables
+nucleus ons = do nuc <- choice validNucleiParsers
+                 stress <- popStress
+                 coda ons nuc stress
 
-validCodaParser :: (String, Maybe Syllables) -> P (String, Maybe Syllables)
-validCodaParser codaPair@(coda, ss) = let validCoda = coda `elem` validCodas
-                                      in if validCoda
-                                         then return codaPair
-                                         else fail "invalid coda somewhere"
-
-stress :: P Stress
-stress = choice [ char 'ˈ' >> return Primary
-                , char 'ˌ' >> return Secondary
-                , return NoStress
-                ]
-
-coda' :: String -> P (String, Maybe Syllables)
-coda' s = do end <- optionMaybe eof
-             if isJust end
-               then validCodaParser (s, Nothing)
-               else do rest <- optionMaybe (try syllables)
-                       if isJust rest
-                         then validCodaParser (s, rest)
-                         else do c <- anyChar
-                                 coda' (s ++ [c])
+coda :: String -> String -> Stress -> P Syllables
+coda ons nuc stress = let coda' cod = try $ do stressString cod
+                                               next <- syllables
+                                               return $ Syllables ons nuc cod stress next
+                      in choice $ map (coda') validCodas
