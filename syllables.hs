@@ -26,6 +26,17 @@ csvWord = do spelling <- many $ noneOf ",\n"
              let strippedTrans = strip transcription
              return $ Word (strip spelling) strippedTrans strippedTrans
 
+readAndParse :: FilePath -> IO [Word (Either ParseError Syllables)]
+readAndParse fp = do ws <- readFile fp
+                     let words = fromRight $ runParser csvParser zeroState "" ws
+                         parsed = map (fmap parseSyllables) words
+                     return parsed
+
+-- Writing the CSV:
+rowFormat :: Word (Either a Syllables) -> String
+rowFormat w = let syllFormatted = fmap (either (const "ERROR") show) w
+              in (wordSpelling syllFormatted) ++ "," ++ (wordTranscription syllFormatted) ++ "," ++ (wordSyllables syllFormatted)
+
 strip = lstrip . rstrip
 lstrip = dropWhile (`elem` " \t")
 rstrip = reverse . lstrip . reverse
