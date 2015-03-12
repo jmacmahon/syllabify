@@ -50,7 +50,7 @@ isLeft _        = False
 
 -- Some example transcriptions
 trousers = "trˈaʊzəz"
-improvements = "ɪmprˈu:vmənts"
+improvements = "ɪmprˈuːvmənts"
 glimpsed = "glˈɪmpst"
 table = "tɛɪbɫ̩"
 rhythm = "rɪðm̩"
