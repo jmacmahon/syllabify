@@ -4,37 +4,51 @@ module Syllables ( parse
                  ) where
 
 import Text.ParserCombinators.Parsec
-import Data.Maybe ( isJust, fromMaybe, fromJust, isNothing )
+import Data.Maybe ( isJust, fromMaybe, fromJust, isNothing, catMaybes )
 import Debug.Trace ( trace )
 import Control.Monad ( join )
+import Text.CSV ( CSV, parseCSVFromFile, Record )
 
 -- Reading the CSV
 data Word a = Word { wordSpelling :: String, wordTranscription :: String, wordSyllables :: a }
             deriving (Show, Eq)
 
-instance Functor Word where
-  fmap f w = w { wordSyllables = f (wordSyllables w) }
+recordToRaw :: Record -> Maybe (Word ())
+recordToRaw rec_ | length rec_ < 2 = Nothing
+                 | otherwise       = Just $ Word (rec_ !! 0) (rec_ !! 1) ()
 
-csvParser :: P [Word String]
-csvParser = many $ do w <- csvWord
-                      char '\n'
-                      return w
+readRawWords :: FilePath -> IO [Word ()]
+readRawWords fp = let rawWords :: CSV -> [Word ()]
+                      rawWords = catMaybes . map recordToRaw
+                  in do errorOrCSV <- parseCSVFromFile fp
+                        either (fail . show) (return . rawWords) errorOrCSV
 
-csvWord :: P (Word String)
-csvWord = do spelling <- many $ noneOf ",\n"
-             char ','
-             transcription <- many $ noneOf ",\n"
-             return $ Word spelling transcription transcription
+processWord :: Word a -> Word (Either ParseError Syllables)
+processWord w = let sylls = parseSyllables $ wordTranscription w
+                in w { wordSyllables = sylls }
 
 readAndParse :: FilePath -> IO [Word (Either ParseError Syllables)]
-readAndParse fp = do ws <- readFile fp
-                     let words = fromRight $ runParser csvParser zeroState "" ws
-                         parsed = map (fmap parseSyllables) words
-                     return parsed
+readAndParse fp = do raw <- readRawWords fp
+                     return $ map processWord raw
+
+recordToParsed :: Record -> Maybe (Word (Either ParseError Syllables))
+recordToParsed rec_ | length rec_ < 3 = Nothing
+                    | otherwise       = let spelling = rec_ !! 0
+                                            transcription = rec_ !! 1
+                                            rawSyllables = rec_ !! 2
+                                            parsedSyllables = runParser (maybeP readParserMaybe) zeroState "" rawSyllables
+                                        in Just $ Word spelling transcription parsedSyllables
+
+readParsedWords :: FilePath -> IO [Word (Either ParseError Syllables)]
+readParsedWords fp = let parsedWords :: CSV -> [Word (Either ParseError Syllables)]
+                         parsedWords = catMaybes . map recordToParsed
+                     in do errorOrCSV <- parseCSVFromFile fp
+                           either (fail . show) (return . parsedWords) errorOrCSV
 
 -- Writing the CSV
 rowFormat :: Word (Either a Syllables) -> String
-rowFormat w = let syllFormatted = fmap (either (const "ERROR") show) w
+rowFormat w = let sylls = wordSyllables w
+                  syllFormatted = w { wordSyllables = either (const "ERROR") show sylls }
               in (wordSpelling syllFormatted)
                  ++ "," ++ (wordTranscription syllFormatted)
                  ++ "," ++ (wordSyllables syllFormatted)
@@ -115,6 +129,39 @@ instance Show Syllables where
   show s@(Syllables _ _ _ _ Nothing  ) = showFirstSyllable s
   show s@(Syllables _ _ _ _ (Just ss)) = showFirstSyllable s ++ " " ++ show ss
 
+-- Quick parser for Read Syllables
+(<<) :: Monad m => m a -> m b -> m a
+(<<) a b = do { v <- a ; b ; return v }
+
+maybeP :: P (Maybe a) -> P a
+maybeP parser = do parsed <- parser
+                   maybe (fail "got nothing") return parsed
+
+readParserMaybe :: P (Maybe Syllables)
+readParserMaybe = let stripNull :: String -> String
+                      stripNull = filter (/= head nullSign)
+
+                      wordNoNull :: P String
+                      wordNoNull = fmap stripNull $ many $ noneOf " ()"
+
+                      oneSyllable :: P Syllables
+                      oneSyllable = do stress <- (char primaryStress >> return Primary) <|>
+                                                 (char secondaryStress >> return Secondary) <|>
+                                                 (return NoStress)
+                                       char '('
+                                       ons <- wordNoNull << char ' '
+                                       nuc <- wordNoNull << char ' '
+                                       cod <- wordNoNull << char ')'
+                                       optionMaybe $ char ' '
+                                       next <- readParserMaybe
+                                       return $ Syllables ons nuc cod stress next
+                  in (eof >> return Nothing) <|> fmap Just oneSyllable
+
+instance Read Syllables where
+  readsPrec _ ss = [(sylls, "")]
+    where sylls = let parsed = runParser (maybeP readParserMaybe) zeroState "" ss
+                  in either (const $ error "no parse") id parsed
+
 type P = GenParser Char SyllState
 
 data SyllState = SyllState { nextStress :: Stress
@@ -124,10 +171,7 @@ zeroState = SyllState NoStress
 
 -- Convenience functions for the parser and representations
 parseSyllables :: String -> Either ParseError Syllables
-parseSyllables s = let parser :: P Syllables
-                       parser = do sylls <- syllables
-                                   maybe (fail "nothing to parse") return sylls
-                   in runParser parser zeroState "" s
+parseSyllables s = runParser (maybeP syllables) zeroState "" s
 
 traceParser :: String -> P ()
 traceParser prefix = do st <- getState
