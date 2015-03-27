@@ -1,15 +1,21 @@
 module Linguisticks.CSV where
 
-import Linguisticks.Util ( Syllables, readParserMaybe, zeroState, maybeP )
+import Linguisticks.Util ( Syllables
+                         , readParserMaybe
+                         , zeroState
+                         , maybeP
+                         , Word ( Word
+                                , wordTranscription
+                                , wordSyllables
+                                , wordSpelling
+                                )
+                         )
 
 import Text.CSV ( CSV, parseCSVFromFile, Record )
 import Data.Maybe ( catMaybes )
 import Text.ParserCombinators.Parsec ( ParseError, runParser )
 
 -- Reading the CSV
-data Word a = Word { wordSpelling :: String, wordTranscription :: String, wordSyllables :: a }
-            deriving (Show, Eq)
-
 recordToRaw :: Record -> Maybe (Word ())
 recordToRaw rec_ | length rec_ < 2 = Nothing
                  | otherwise       = Just $ Word (rec_ !! 0) (rec_ !! 1) ()

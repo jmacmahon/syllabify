@@ -2,8 +2,8 @@ module Linguisticks.Util where
 
 import Data.Maybe ( isNothing, fromJust )
 import Text.ParserCombinators.Parsec ( GenParser, many, noneOf, char, (<|>), optionMaybe, eof, runParser )
-
 import Text.Parsec.Prim ( ParsecT )
+import Text.Parsec.Error ( ParseError )
 
 fromRight :: Either a b -> b
 fromRight (Right b) = b
@@ -89,3 +89,8 @@ instance Read Syllables where
   readsPrec _ ss = [(sylls, "")]
     where sylls = let parsed = runParser (maybeP readParserMaybe) zeroState "" ss
                   in either (const $ error "no parse") id parsed
+
+data Word a = Word { wordSpelling :: String, wordTranscription :: String, wordSyllables :: a }
+            deriving (Show, Eq)
+
+type ParsedWord a = Word (Either ParseError a)
