@@ -1,7 +1,4 @@
-module Linguisticks.Parser ( parseSyllables
-                           , trousers
-                           , improvements
-                           ) where
+module Linguisticks.Parser where
 
 import Linguisticks.Util ( P
                          , maybeP

@@ -1,9 +1,10 @@
 module Linguisticks where
 
 import qualified Linguisticks.Util as U
-import qualified Linguisticks.Parser as P
+import qualified Linguisticks.Parser as Par
 import qualified Linguisticks.CSV as C
-import qualified Linguisticks.Statistics as S
+import qualified Linguisticks.Statistics.Analysis as An
+import qualified Linguisticks.Statistics.Processing as Pr
 
 import Text.Parsec.Error ( ParseError )
 

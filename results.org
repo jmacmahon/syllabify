@@ -1,3 +1,28 @@
+* List of questions
+Do words differ across datasets wrt.:
+1. length by syllables?
+2. length by phonemes?
+3. ratio of consonants to vowels?
+
+4. For each consonant, do words differ across datasets wrt. frequency of
+that consonant relative to word length?
+
+5-7. Do onsets differ across datasets wrt. the number of consonants they
+contain?
+
+9-10. Do codas differ across datasets wrt. number of consonants they
+contain?
+
+11. Do nuclei differ across datasets wrt. whether they are filled by schwa?
+
+
+12. Do syllables differ across datasets wrt. heaviness?
+
+For each consonant cluster, do syllables differ across datasets wrt.
+occurrence of that cluster:
+13. in the onset?
+14. in the coda?
+
 * Questions 1-3
 
 ** Methodology
@@ -6,14 +31,14 @@
 
 ** Q1 (Syllable length)
 
-** Mean confidence intervals
+*** Mean confidence intervals
 |              | Lower bound | Upper bound |
 |--------------+-------------+-------------|
 | Real         |        2.10 |        2.18 |
 | Elicited     |        2.58 |        3.26 |
 | Carroll/Lear |        2.34 |        2.84 |
 
-** T-Tests
+*** T-Tests
 |                           | Significant? | Results             | p-value |
 |---------------------------+--------------+---------------------+---------|
 | Real vs. Elicited         | Yes          | real < elicited     | 2.92e-8 |
@@ -24,14 +49,14 @@
 
 ** Q2 (Phoneme length)
 
-** Mean confidence intervals
+*** Mean confidence intervals
 |              | Lower bound | Upper bound |
 |--------------+-------------+-------------|
 | Real         |        5.77 |        5.94 |
 | Elicited     |        6.91 |        8.42 |
 | Carroll/Lear |        6.59 |        7.87 |
 
-** T-Tests
+*** T-Tests
 |                           | Significant? | Results         | p-value |
 |---------------------------+--------------+-----------------+---------|
 | Real vs. Elicited         | Yes          | real < elicited | 7.53e-9 |
@@ -39,3 +64,16 @@
 | Real vs. ...              |              |                 |         |
 | Elicited vs. Carroll/Lear | No           | N/A             | 0.128   |
 | ...                       |              |                 |         |
+
+** Q2 (Consonant-Vowel ratio)
+Statistic measured: number of consonants / number of vowels.
+Higher means more consonants per vowel.
+
+*** T-Tests
+|                           | Significant? | Results             | p-value |
+|---------------------------+--------------+---------------------+---------|
+| Real vs. Elicited         | Yes          | real < elicited     | 5.01e-6 |
+| Real vs. Carroll/Lear     | Yes          | real < carroll/lear | 2.95e-7 |
+| Real vs. ...              |              |                     |         |
+| Elicited vs. Carroll/Lear | No           | N/A                 |   0.256 |
+| ...                       |              |                     |         |
