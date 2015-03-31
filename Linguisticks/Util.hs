@@ -5,6 +5,12 @@ import Text.ParserCombinators.Parsec ( GenParser, many, noneOf, char, (<|>), opt
 import Text.Parsec.Prim ( ParsecT )
 import Text.Parsec.Error ( ParseError )
 
+sequenceSecond :: Monad m => [(a, m b)] -> m [(a, b)]
+sequenceSecond ms = let (as, mbs) = unzip ms
+                        mb = sequence mbs
+                    in do bs <- mb
+                          return $ zip as bs
+
 fromRight :: Either a b -> b
 fromRight (Right b) = b
 

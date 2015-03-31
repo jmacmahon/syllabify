@@ -1,7 +1,9 @@
 module Linguisticks.Statistics.Analysis where
 
+import qualified Linguisticks.Util as U
 import qualified Linguisticks.Statistics.Analysis.StudentT as StT
 import qualified Linguisticks.Statistics.Analysis.Mean as Mean
+import qualified Linguisticks.Statistics.Processing as Pr
 
 import qualified Statistics.Sample as S
 import qualified Statistics.Distribution as D
@@ -9,6 +11,17 @@ import qualified Statistics.Distribution as D
 studentTPValue = StT.studentTPValue
 studentTValue = StT.studentTValue
 meanConfidenceInterval = Mean.meanConfidenceInterval
+
+twoSampleTest :: ([U.Word b] -> [U.Word b] -> a) -> [(String, [U.Word b])] -> [(String, String, a)]
+twoSampleTest test samples = do (id1, ps1) <- samples
+                                (id2, ps2) <- samples
+                                if id1 == id2
+                                  then fail ""
+                                  else return (id1, id2, test ps1 ps2)
+
+tTest :: ([U.Word a] -> S.Sample) -> [(String, [U.Word a])] -> [(String, String, Double, Ordering)]
+tTest pr = let flatten (a, b, (c, d)) = (a, b, c, d)
+           in map flatten . twoSampleTest (Pr.twoSampleProcess pr studentTPValue)
 
 {-
 class SampleTest t where
