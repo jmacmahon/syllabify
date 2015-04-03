@@ -15,7 +15,6 @@ contain?
 
 11. Do nuclei differ across datasets wrt. whether they are filled by schwa?
 
-
 12. Do syllables differ across datasets wrt. heaviness?
 
 For each consonant cluster, do syllables differ across datasets wrt.
@@ -201,3 +200,41 @@ Higher means more consonants per vowel.
 | hitchhikers vs. dahl_rowling  | No           | N/A                      |  2.92e-1 |
 | hitchhikers vs. gullivers     | Yes          | hitchhikers < gullivers  |  2.88e-3 |
 | dahl_rowling vs. gullivers    | No           | N/A                      |  1.79e-2 |
+* Question 9
+** T-Tests
+| Test                          | Significant? | Result                   | p-value |
+|-------------------------------+--------------+--------------------------+---------|
+| elicited vs. real             | Yes          | elicited < real          | 5.65e-5 |
+| elicited vs. carroll_lear     | No           | N/A                      | 1.27e-2 |
+| elicited vs. hitchhikers      | Yes          | elicited < hitchhikers   | 6.95e-5 |
+| elicited vs. dahl_rowling     | Yes          | elicited < dahl_rowling  | 1.42e-3 |
+| elicited vs. gullivers        | Yes          | elicited < gullivers     | 4.22e-8 |
+| real vs. carroll_lear         | No           | N/A                      | 3.35e-1 |
+| real vs. hitchhikers          | No           | N/A                      | 5.04e-2 |
+| real vs. dahl_rowling         | No           | N/A                      | 3.04e-1 |
+| real vs. gullivers            | Yes          | real < gullivers         | 1.45e-4 |
+| carroll_lear vs. hitchhikers  | No           | N/A                      | 6.84e-2 |
+| carroll_lear vs. dahl_rowling | No           | N/A                      | 2.51e-1 |
+| carroll_lear vs. gullivers    | Yes          | carroll_lear < gullivers | 1.99e-3 |
+| hitchhikers vs. dahl_rowling  | No           | N/A                      | 2.01e-1 |
+| hitchhikers vs. gullivers     | No           | N/A                      | 8.83e-2 |
+| dahl_rowling vs. gullivers    | No           | N/A                      | 1.28e-2 |
+* Question 11
+** T-Tests
+| Test                          | Significant? | Result           | p-value |
+|-------------------------------+--------------+------------------+---------|
+| elicited vs. real             | No           | N/A              | 1.73e-1 |
+| elicited vs. carroll_lear     | No           | N/A              | 1.27e-1 |
+| elicited vs. hitchhikers      | No           | N/A              | 2.06e-1 |
+| elicited vs. dahl_rowling     | No           | N/A              | 2.78e-1 |
+| elicited vs. gullivers        | No           | N/A              | 1.10e-2 |
+| real vs. carroll_lear         | No           | N/A              | 6.23e-3 |
+| real vs. hitchhikers          | No           | N/A              | 1.26e-2 |
+| real vs. dahl_rowling         | No           | N/A              | 4.31e-2 |
+| real vs. gullivers            | Yes          | real > gullivers | 7.91e-6 |
+| carroll_lear vs. hitchhikers  | No           | N/A              | 3.51e-1 |
+| carroll_lear vs. dahl_rowling | No           | N/A              | 2.96e-1 |
+| carroll_lear vs. gullivers    | No           | N/A              | 1.38e-1 |
+| hitchhikers vs. dahl_rowling  | No           | N/A              | 4.25e-1 |
+| hitchhikers vs. gullivers     | No           | N/A              | 5.92e-2 |
+| dahl_rowling vs. gullivers    | No           | N/A              | 5.07e-2 |

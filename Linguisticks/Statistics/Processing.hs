@@ -48,17 +48,31 @@ consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTransc
 sampleConsonantRatio :: Char -> [U.Word a] -> S.Sample
 sampleConsonantRatio c = V.fromList . map (consonantRatio c)
 
---consonantCount :: String -> Double
---consonantCount = 
+sampleSchwa :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleSchwa = let gatherSchwa :: [U.Syllables] -> [Double]
+                  gatherSchwa []     = []
+                  gatherSchwa (s:ss) = let sylls = U.syllsToList s
+                                           nuclei = map (\(_, n, _, _) -> n) sylls
+                                           isSchwa "ə" = 1
+                                           isSchwa _   = 0
+                                           schwaCounts = map isSchwa nuclei
+                                       in schwaCounts ++ (gatherSchwa ss)
+                        in V.fromList . gatherSchwa . rights . map U.wordSyllables
+
+sampleConsonants :: ((String, String, String, U.Stress) -> String) -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleConsonants f = let gatherConsonants :: [U.Syllables] -> [Double]
+                         gatherConsonants []     = []
+                         gatherConsonants (s:ss) = let sylls = U.syllsToList s
+                                                       subsylls = map f sylls
+                                                       consonantCounts = map consonantLength subsylls
+                                                   in consonantCounts ++ (gatherConsonants ss)
+                        in V.fromList . gatherConsonants . rights . map U.wordSyllables
+
+sampleCodaConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleCodaConsonants = sampleConsonants (\(_, _, c, _) -> c)
 
 sampleOnsetConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
-sampleOnsetConsonants = let gatherConsonants :: [U.Syllables] -> [Double]
-                            gatherConsonants []     = []
-                            gatherConsonants (s:ss) = let sylls = U.syllsToList s
-                                                          onsets = map (\(o, _, _, _) -> o) sylls
-                                                          consonantCounts = map consonantLength onsets
-                                                      in consonantCounts ++ (gatherConsonants ss)
-                        in V.fromList . gatherConsonants . rights . map U.wordSyllables
+sampleOnsetConsonants = sampleConsonants (\(o, _, _, _) -> o)
 
 twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
 twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)
