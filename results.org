@@ -182,3 +182,22 @@ Higher means more consonants per vowel.
 | ɫ     | carroll_lear vs. gullivers   | Yes          | carroll_lear > gullivers   |  2.64e-7 |
 | ɫ     | hitchhikers vs. gullivers    | Yes          | hitchhikers > gullivers    |  8.09e-5 |
 | ɫ     | dahl_rowling vs. gullivers   | Yes          | dahl_rowling > gullivers   |  6.25e-7 |
+* Question 5
+** T-Tests
+| Test                          | Significant? | Result                   |  p-value |
+|-------------------------------+--------------+--------------------------+----------|
+| elicited vs. real             | Yes          | elicited > real          |  1.85e-4 |
+| elicited vs. carroll_lear     | No           | N/A                      |  2.56e-1 |
+| elicited vs. hitchhikers      | No           | N/A                      |  7.56e-2 |
+| elicited vs. dahl_rowling     | No           | N/A                      |  3.29e-2 |
+| elicited vs. gullivers        | Yes          | elicited < gullivers     |  5.68e-5 |
+| real vs. carroll_lear         | Yes          | real < carroll_lear      |  5.14e-7 |
+| real vs. hitchhikers          | Yes          | real < hitchhikers       | 7.25e-10 |
+| real vs. dahl_rowling         | Yes          | real < dahl_rowling      |  3.62e-9 |
+| real vs. gullivers            | Yes          | real < gullivers         | 5.00e-15 |
+| carroll_lear vs. hitchhikers  | No           | N/A                      |  2.04e-1 |
+| carroll_lear vs. dahl_rowling | No           | N/A                      |  9.66e-2 |
+| carroll_lear vs. gullivers    | Yes          | carroll_lear < gullivers |  2.80e-4 |
+| hitchhikers vs. dahl_rowling  | No           | N/A                      |  2.92e-1 |
+| hitchhikers vs. gullivers     | Yes          | hitchhikers < gullivers  |  2.88e-3 |
+| dahl_rowling vs. gullivers    | No           | N/A                      |  1.79e-2 |
