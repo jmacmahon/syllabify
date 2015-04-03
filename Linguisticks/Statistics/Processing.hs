@@ -31,10 +31,11 @@ consonants = "pbtdkgfvθðszʃʒʧʤmnlrwjhŋɫ"
 vowels = "ɛɪaɔəʊiueɑʌoːɜɒ"
 
 -- Several passes, but premature optimisation is the root of all evil
+consonantLength = fromIntegral . length . filter (`elem` consonants)
+vowelLength = fromIntegral . length . filter (`elem` vowels)
+                              
 cvRatio :: U.Word a -> Double
-cvRatio w = let consonantLength = length $ filter (`elem` consonants) $ U.wordTranscription w
-                vowelLength = length $ filter (`elem` vowels) $ U.wordTranscription w
-            in fromIntegral consonantLength / fromIntegral vowelLength
+cvRatio w = (consonantLength $ U.wordTranscription w) / (vowelLength $ U.wordTranscription w)
 
 sampleCVRatio :: [U.Word a] -> S.Sample
 sampleCVRatio = V.fromList . map cvRatio
@@ -46,6 +47,18 @@ consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTransc
 
 sampleConsonantRatio :: Char -> [U.Word a] -> S.Sample
 sampleConsonantRatio c = V.fromList . map (consonantRatio c)
+
+--consonantCount :: String -> Double
+--consonantCount = 
+
+sampleOnsetConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleOnsetConsonants = let gatherConsonants :: [U.Syllables] -> [Double]
+                            gatherConsonants []     = []
+                            gatherConsonants (s:ss) = let sylls = U.syllsToList s
+                                                          onsets = map (\(o, _, _, _) -> o) sylls
+                                                          consonantCounts = map consonantLength onsets
+                                                      in consonantCounts ++ (gatherConsonants ss)
+                        in V.fromList . gatherConsonants . rights . map U.wordSyllables
 
 twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
 twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)
