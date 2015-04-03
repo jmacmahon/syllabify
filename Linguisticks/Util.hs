@@ -4,12 +4,22 @@ import Data.Maybe ( isNothing, fromJust )
 import Text.ParserCombinators.Parsec ( GenParser, many, noneOf, char, (<|>), optionMaybe, eof, runParser )
 import Text.Parsec.Prim ( ParsecT )
 import Text.Parsec.Error ( ParseError )
+import qualified Data.Set as S
+type Set = S.Set
 
 sequenceSecond :: Monad m => [(a, m b)] -> m [(a, b)]
 sequenceSecond ms = let (as, mbs) = unzip ms
                         mb = sequence mbs
                     in do bs <- mb
                           return $ zip as bs
+
+choose :: Int -> [a] -> [[a]]
+choose 0 _  = [[]]
+choose n ss = let splits = [0..(length ss - 1)]
+              in do split <- splits
+                    let (top, bot) = splitAt split ss
+                    rest <- choose (n-1) (tail bot)
+                    return $ (head bot):rest
 
 fromRight :: Either a b -> b
 fromRight (Right b) = b

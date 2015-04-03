@@ -13,11 +13,10 @@ studentTValue = StT.studentTValue
 meanConfidenceInterval = Mean.meanConfidenceInterval
 
 twoSampleTest :: ([U.Word b] -> [U.Word b] -> a) -> [(String, [U.Word b])] -> [(String, String, a)]
-twoSampleTest test samples = do (id1, ps1) <- samples
-                                (id2, ps2) <- samples
-                                if id1 == id2
-                                  then fail ""
-                                  else return (id1, id2, test ps1 ps2)
+twoSampleTest test samples = do samplePair <- U.choose 2 samples
+                                let (id1, ps1) = samplePair !! 0
+                                    (id2, ps2) = samplePair !! 1
+                                return (id1, id2, test ps1 ps2)
 
 tTest :: ([U.Word a] -> S.Sample) -> [(String, [U.Word a])] -> [(String, String, Double, Ordering)]
 tTest pr = let flatten (a, b, (c, d)) = (a, b, c, d)

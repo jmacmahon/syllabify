@@ -39,5 +39,13 @@ cvRatio w = let consonantLength = length $ filter (`elem` consonants) $ U.wordTr
 sampleCVRatio :: [U.Word a] -> S.Sample
 sampleCVRatio = V.fromList . map cvRatio
 
+consonantRatio :: Char -> U.Word a -> Double
+consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTranscription w
+                         wLength = length $ U.wordTranscription w
+                     in (fromIntegral consonantLength) / (fromIntegral wLength)
+
+sampleConsonantRatio :: Char -> [U.Word a] -> S.Sample
+sampleConsonantRatio c = V.fromList . map (consonantRatio c)
+
 twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
 twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)

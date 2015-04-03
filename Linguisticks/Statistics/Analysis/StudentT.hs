@@ -1,5 +1,7 @@
 module Linguisticks.Statistics.Analysis.StudentT where
 
+import Debug.Trace ( trace )
+
 import qualified Linguisticks.Util as U
 
 import qualified Data.Vector.Unboxed as V
@@ -30,4 +32,6 @@ studentTPValue sample1 sample2 = let tValue = studentTValue sample1 sample2
                                      absTValue = abs tValue
                                      v = welchV sample1 sample2
                                      myStT = StT.studentT v
-                                 in (D.complCumulative myStT absTValue, flip compare 0 tValue)
+                                 in if isNaN tValue
+                                    then (0.5, EQ)
+                                    else(D.complCumulative myStT absTValue, flip compare 0 tValue)
