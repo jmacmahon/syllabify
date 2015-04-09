@@ -1,3 +1,15 @@
+* To-do
+- Means for Qs:
+  - 1
+  - 2
+  - 3
+  - 5
+  - 9
+  - 13
+  - 14
+- Q4 length in sylls.
+- For each set, graph of Q4
+
 * List of questions
 Do words differ across datasets wrt.:
 1. length by syllables?
@@ -16,18 +28,25 @@ contain?
 11. Do nuclei differ across datasets wrt. whether they are filled by schwa?
 
 12. Do syllables differ across datasets wrt. heaviness?
+- Heaviness is >1 segment in rime.
+- Everything but long vowels and dipthongs count as 1 segment; otherwise 2 segments.
 
 For each consonant cluster, do syllables differ across datasets wrt.
 occurrence of that cluster:
 13. in the onset?
 14. in the coda?
 
+* Methodology
+For numerical values, 99% confidence intervals are given for mean (using Normal distribution of x-bar).
+For two sample hypothesis tests, Welch's t-test is used with alpha = 0.01. The p-value is also noted.  In questions 4, 13 and 14, only the significant results are reported.
+
+With regard to the hypothesis tests:
+- In all cases, the null hypothesis is that the distributions of the samples are equal with respect to the statistic in question.
+- The p-value is the probability that the data we collected fits the null hypothesis.
+- We consider a result significant if the p-value is less than our predetermined alpha value.
+- In our case this means that there is <1% chance that if the null hypothesis were true, we would observe the data that we did.
+
 * Questions 1-3
-
-** Methodology
-- 99% confidence interval for mean using Normal distribution of x-bar
-- Welch's t-test, alpha = 0.01, p-value also noted
-
 ** Q1 (Syllable length)
 
 *** Mean confidence intervals
@@ -38,23 +57,23 @@ occurrence of that cluster:
 | Carroll/Lear |        2.34 |        2.84 |
 
 *** T-Tests
-|                               | Significant? | Results                  |  p-value |
-|-------------------------------+--------------+--------------------------+----------|
-| elicited vs. real             | Yes          | elicited > real          |  2.92e-8 |
-| elicited vs. carroll_lear     | No           | N/A                      |  2.24e-2 |
-| elicited vs. hitchhikers      | Yes          | elicited > hitchhikers   |  2.61e-4 |
-| elicited vs. dahl_rowling     | No           | N/A                      |  3.01e-2 |
-| elicited vs. gullivers        | Yes          | elicited > gullivers     |  7.71e-5 |
-| real vs. carroll_lear         | Yes          | real < carroll_lear      |  8.10e-6 |
-| real vs. hitchhikers          | Yes          | real < hitchhikers       |  3.53e-3 |
-| real vs. dahl_rowling         | Yes          | real < dahl_rowling      | 9.08e-10 |
-| real vs. gullivers            | No           | N/A                      |  6.87e-3 |
-| carroll_lear vs. hitchhikers  | No           | N/A                      |  4.37e-2 |
-| carroll_lear vs. dahl_rowling | No           | N/A                      |  3.54e-1 |
-| carroll_lear vs. gullivers    | No           | N/A                      |  1.88e-2 |
-| hitchhikers vs. dahl_rowling  | No           | N/A                      |  8.49e-3 |
-| hitchhikers vs. gullivers     | No           | N/A                      |  3.66e-1 |
-| dahl_rowling vs. gullivers    | Yes          | dahl_rowling > gullivers |  2.09e-3 | 
+| Sample 1     | Sample 2     | Significant? | Results                  |  p-value |
+|--------------+--------------+--------------+--------------------------+----------|
+| elicited     | real         | Yes          | elicited > real          |  2.92e-8 |
+| elicited     | carroll_lear | No           | N/A                      |  2.24e-2 |
+| elicited     | hitchhikers  | Yes          | elicited > hitchhikers   |  2.61e-4 |
+| elicited     | dahl_rowling | No           | N/A                      |  3.01e-2 |
+| elicited     | gullivers    | Yes          | elicited > gullivers     |  7.71e-5 |
+| real         | carroll_lear | Yes          | real < carroll_lear      |  8.10e-6 |
+| real         | hitchhikers  | Yes          | real < hitchhikers       |  3.53e-3 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling      | 9.08e-10 |
+| real         | gullivers    | No           | N/A                      |  6.87e-3 |
+| carroll_lear | hitchhikers  | No           | N/A                      |  4.37e-2 |
+| carroll_lear | dahl_rowling | No           | N/A                      |  3.54e-1 |
+| carroll_lear | gullivers    | No           | N/A                      |  1.88e-2 |
+| hitchhikers  | dahl_rowling | No           | N/A                      |  8.49e-3 |
+| hitchhikers  | gullivers    | No           | N/A                      |  3.66e-1 |
+| dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers |  2.09e-3 |
   
 ** Q2 (Phoneme length)
 
@@ -66,175 +85,472 @@ occurrence of that cluster:
 | Carroll/Lear |        6.59 |        7.87 |
 
 *** T-Tests
-|                               | Significant? | Results             |  p-value |
-|-------------------------------+--------------+---------------------+----------|
-| elicited vs. real             | Yes          | elicited > real     |  7.53e-9 |
-| elicited vs. carroll_lear     | No           | N/A                 |  1.28e-1 |
-| elicited vs. hitchhikers      | No           | N/A                 |  1.01e-2 |
-| elicited vs. dahl_rowling     | No           | N/A                 |  4.15e-1 |
-| elicited vs. gullivers        | No           | N/A                 |  1.62e-1 |
-| real vs. carroll_lear         | Yes          | real < carroll_lear |  1.69e-7 |
-| real vs. hitchhikers          | Yes          | real < hitchhikers  |  3.14e-6 |
-| real vs. dahl_rowling         | Yes          | real < dahl_rowling | 2.42e-12 |
-| real vs. gullivers            | Yes          | real < gullivers    | 2.93e-10 |
-| carroll_lear vs. hitchhikers  | No           | N/A                 |  1.08e-1 |
-| carroll_lear vs. dahl_rowling | No           | N/A                 |  1.39e-1 |
-| carroll_lear vs. gullivers    | No           | N/A                 |  4.03e-1 |
-| hitchhikers vs. dahl_rowling  | No           | N/A                 |  5.95e-3 |
-| hitchhikers vs. gullivers     | No           | N/A                 |  5.19e-2 |
-| dahl_rowling vs. gullivers    | No           | N/A                 |  1.79e-1 |
+| Sample 1     | Sample 2     | Significant? | Results             |  p-value |
+|--------------+--------------+--------------+---------------------+----------|
+| elicited     | real         | Yes          | elicited > real     |  7.53e-9 |
+| elicited     | carroll_lear | No           | N/A                 |  1.28e-1 |
+| elicited     | hitchhikers  | No           | N/A                 |  1.01e-2 |
+| elicited     | dahl_rowling | No           | N/A                 |  4.15e-1 |
+| elicited     | gullivers    | No           | N/A                 |  1.62e-1 |
+| real         | carroll_lear | Yes          | real < carroll_lear |  1.69e-7 |
+| real         | hitchhikers  | Yes          | real < hitchhikers  |  3.14e-6 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling | 2.42e-12 |
+| real         | gullivers    | Yes          | real < gullivers    | 2.93e-10 |
+| carroll_lear | hitchhikers  | No           | N/A                 |  1.08e-1 |
+| carroll_lear | dahl_rowling | No           | N/A                 |  1.39e-1 |
+| carroll_lear | gullivers    | No           | N/A                 |  4.03e-1 |
+| hitchhikers  | dahl_rowling | No           | N/A                 |  5.95e-3 |
+| hitchhikers  | gullivers    | No           | N/A                 |  5.19e-2 |
+| dahl_rowling | gullivers    | No           | N/A                 |  1.79e-1 |
 
 ** Q3 (Consonant-Vowel ratio)
 Statistic measured: number of consonants / number of vowels.
 Higher means more consonants per vowel.
 
 *** T-Tests
-|                               | Significant? | Results             | p-value |
-|-------------------------------+--------------+---------------------+---------|
-| elicited vs. real             | Yes          | elicited > real     | 5.01e-6 |
-| elicited vs. carroll_lear     | No           | N/A                 | 2.56e-1 |
-| elicited vs. hitchhikers      | No           | N/A                 | 1.16e-1 |
-| elicited vs. dahl_rowling     | No           | N/A                 | 4.18e-1 |
-| elicited vs. gullivers        | No           | N/A                 | 4.15e-1 |
-| real vs. carroll_lear         | Yes          | real < carroll_lear | 2.95e-7 |
-| real vs. hitchhikers          | Yes          | real < hitchhikers  | 8.69e-5 |
-| real vs. dahl_rowling         | Yes          | real < dahl_rowling | 1.10e-6 |
-| real vs. gullivers            | Yes          | real < gullivers    | 9.69e-8 |
-| carroll_lear vs. hitchhikers  | No           | N/A                 | 3.01e-2 |
-| carroll_lear vs. dahl_rowling | No           | N/A                 | 3.23e-1 |
-| carroll_lear vs. gullivers    | No           | N/A                 | 1.75e-1 |
-| hitchhikers vs. dahl_rowling  | No           | N/A                 | 7.52e-2 |
-| hitchhikers vs. gullivers     | No           | N/A                 | 1.30e-1 |
-| dahl_rowling vs. gullivers    | No           | N/A                 | 3.27e-1 |
+| Sample 1     | Sample 2     | Significant? | Results             | p-value |
+|--------------+--------------+--------------+---------------------+---------|
+| elicited     | real         | Yes          | elicited > real     | 5.01e-6 |
+| elicited     | carroll_lear | No           | N/A                 | 2.56e-1 |
+| elicited     | hitchhikers  | No           | N/A                 | 1.16e-1 |
+| elicited     | dahl_rowling | No           | N/A                 | 4.18e-1 |
+| elicited     | gullivers    | No           | N/A                 | 4.15e-1 |
+| real         | carroll_lear | Yes          | real < carroll_lear | 2.95e-7 |
+| real         | hitchhikers  | Yes          | real < hitchhikers  | 8.69e-5 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling | 1.10e-6 |
+| real         | gullivers    | Yes          | real < gullivers    | 9.69e-8 |
+| carroll_lear | hitchhikers  | No           | N/A                 | 3.01e-2 |
+| carroll_lear | dahl_rowling | No           | N/A                 | 3.23e-1 |
+| carroll_lear | gullivers    | No           | N/A                 | 1.75e-1 |
+| hitchhikers  | dahl_rowling | No           | N/A                 | 7.52e-2 |
+| hitchhikers  | gullivers    | No           | N/A                 | 1.30e-1 |
+| dahl_rowling | gullivers    | No           | N/A                 | 3.27e-1 |
 
 * Question 4
 ** T-Tests
-| Cons. | Test                         | Significant? | Result                     |  p-value |
-|-------+------------------------------+--------------+----------------------------+----------|
-| p     | hitchhikers vs. dahl_rowling | Yes          | hitchhikers < dahl_rowling |  2.12e-3 |
-| b     | elicited vs. real            | Yes          | elicited > real            |  2.06e-4 |
-| b     | elicited vs. hitchhikers     | Yes          | elicited > hitchhikers     |  2.65e-3 |
-| b     | real vs. carroll_lear        | Yes          | real < carroll_lear        |  2.16e-6 |
-| b     | real vs. dahl_rowling        | Yes          | real < dahl_rowling        |  2.96e-3 |
-| b     | carroll_lear vs. hitchhikers | Yes          | carroll_lear > hitchhikers |  9.41e-5 |
-| t     | elicited vs. real            | Yes          | elicited < real            |  2.39e-7 |
-| t     | real vs. carroll_lear        | Yes          | real > carroll_lear        |  4.94e-6 |
-| t     | real vs. dahl_rowling        | Yes          | real > dahl_rowling        | 2.18e-11 |
-| t     | real vs. gullivers           | Yes          | real > gullivers           |  8.99e-7 |
-| t     | hitchhikers vs. dahl_rowling | Yes          | hitchhikers > dahl_rowling |  6.98e-4 |
-| d     | elicited vs. gullivers       | Yes          | elicited < gullivers       |  1.68e-3 |
-| g     | elicited vs. real            | Yes          | elicited > real            |  8.62e-5 |
-| g     | real vs. hitchhikers         | Yes          | real < hitchhikers         |  2.78e-6 |
-| g     | real vs. dahl_rowling        | Yes          | real < dahl_rowling        |  4.29e-5 |
-| g     | real vs. gullivers           | Yes          | real < gullivers           |  1.94e-6 |
-| f     | real vs. carroll_lear        | Yes          | real < carroll_lear        |  7.02e-4 |
-| f     | carroll_lear vs. hitchhikers | Yes          | carroll_lear > hitchhikers |  2.97e-3 |
-| v     | elicited vs. real            | Yes          | elicited < real            |  2.14e-8 |
-| v     | elicited vs. hitchhikers     | Yes          | elicited < hitchhikers     |  8.30e-4 |
-| v     | real vs. dahl_rowling        | Yes          | real > dahl_rowling        |  3.52e-4 |
-| v     | real vs. gullivers           | Yes          | real > gullivers           | 5.66e-13 |
-| v     | hitchhikers vs. dahl_rowling | Yes          | hitchhikers > dahl_rowling |  4.73e-3 |
-| v     | hitchhikers vs. gullivers    | Yes          | hitchhikers > gullivers    |  2.88e-4 |
-| ð     | elicited vs. real            | Yes          | elicited < real            | 4.38e-12 |
-| ð     | real vs. hitchhikers         | Yes          | real > hitchhikers         | 4.38e-12 |
-| ð     | real vs. dahl_rowling        | Yes          | real > dahl_rowling        | 4.38e-12 |
-| ð     | real vs. gullivers           | Yes          | real > gullivers           | 4.38e-12 |
-| s     | elicited vs. real            | Yes          | elicited < real            |  1.60e-3 |
-| ʒ     | real vs. carroll_lear        | Yes          | real > carroll_lear        |  6.65e-8 |
-| ʒ     | real vs. hitchhikers         | Yes          | real > hitchhikers         |  6.65e-8 |
-| ʒ     | real vs. dahl_rowling        | Yes          | real > dahl_rowling        |  6.65e-8 |
-| ʒ     | real vs. gullivers           | Yes          | real > gullivers           |  6.65e-8 |
-| ʤ     | real vs. gullivers           | Yes          | real > gullivers           |   0.00e0 |
-| ʤ     | carroll_lear vs. gullivers   | Yes          | carroll_lear > gullivers   |  2.49e-3 |
-| ʤ     | hitchhikers vs. gullivers    | Yes          | hitchhikers > gullivers    |  1.85e-4 |
-| m     | carroll_lear vs. hitchhikers | Yes          | carroll_lear > hitchhikers |  2.19e-3 |
-| n     | elicited vs. real            | Yes          | elicited < real            |  5.84e-4 |
-| n     | real vs. carroll_lear        | Yes          | real > carroll_lear        |  8.59e-6 |
-| n     | real vs. hitchhikers         | Yes          | real > hitchhikers         |  8.11e-4 |
-| n     | real vs. dahl_rowling        | Yes          | real > dahl_rowling        |  8.75e-4 |
-| n     | carroll_lear vs. gullivers   | Yes          | carroll_lear < gullivers   |  1.31e-3 |
-| l     | elicited vs. gullivers       | Yes          | elicited < gullivers       |  1.77e-6 |
-| l     | real vs. hitchhikers         | Yes          | real < hitchhikers         |  8.56e-4 |
-| l     | real vs. gullivers           | Yes          | real < gullivers           | 9.59e-14 |
-| l     | carroll_lear vs. gullivers   | Yes          | carroll_lear < gullivers   |  1.04e-9 |
-| l     | hitchhikers vs. gullivers    | Yes          | hitchhikers < gullivers    |  4.90e-5 |
-| l     | dahl_rowling vs. gullivers   | Yes          | dahl_rowling < gullivers   |  2.38e-7 |
-| r     | carroll_lear vs. hitchhikers | Yes          | carroll_lear < hitchhikers |  5.26e-4 |
-| r     | carroll_lear vs. gullivers   | Yes          | carroll_lear < gullivers   |  3.47e-3 |
-| w     | elicited vs. dahl_rowling    | Yes          | elicited < dahl_rowling    |  1.99e-3 |
-| w     | real vs. dahl_rowling        | Yes          | real < dahl_rowling        |  9.83e-4 |
-| w     | dahl_rowling vs. gullivers   | Yes          | dahl_rowling > gullivers   |  5.25e-4 |
-| j     | real vs. carroll_lear        | Yes          | real > carroll_lear        |  4.40e-3 |
-| j     | real vs. gullivers           | Yes          | real > gullivers           |  4.78e-3 |
-| h     | elicited vs. real            | Yes          | elicited < real            |  1.51e-3 |
-| h     | elicited vs. hitchhikers     | Yes          | elicited < hitchhikers     |  3.63e-3 |
-| ŋ     | elicited vs. real            | Yes          | elicited > real            |  2.02e-3 |
-| ŋ     | elicited vs. gullivers       | Yes          | elicited > gullivers       |  4.97e-3 |
-| ɫ     | elicited vs. real            | Yes          | elicited > real            |  1.41e-7 |
-| ɫ     | elicited vs. hitchhikers     | Yes          | elicited > hitchhikers     |  4.25e-4 |
-| ɫ     | elicited vs. gullivers       | Yes          | elicited > gullivers       |  1.52e-8 |
-| ɫ     | real vs. carroll_lear        | Yes          | real < carroll_lear        |  1.86e-6 |
-| ɫ     | real vs. hitchhikers         | Yes          | real < hitchhikers         |  1.79e-3 |
-| ɫ     | real vs. dahl_rowling        | Yes          | real < dahl_rowling        |  7.77e-6 |
-| ɫ     | real vs. gullivers           | Yes          | real > gullivers           |   0.00e0 |
-| ɫ     | carroll_lear vs. hitchhikers | Yes          | carroll_lear > hitchhikers |  1.55e-3 |
-| ɫ     | carroll_lear vs. gullivers   | Yes          | carroll_lear > gullivers   |  2.64e-7 |
-| ɫ     | hitchhikers vs. gullivers    | Yes          | hitchhikers > gullivers    |  8.09e-5 |
-| ɫ     | dahl_rowling vs. gullivers   | Yes          | dahl_rowling > gullivers   |  6.25e-7 |
+| Cons. | Sample 1     | Sample 2     | Significant? | Result                     |  p-value |
+|-------+--------------+--------------+--------------+----------------------------+----------|
+| p     | hitchhikers  | dahl_rowling | Yes          | hitchhikers < dahl_rowling |  2.12e-3 |
+| b     | elicited     | real         | Yes          | elicited > real            |  2.06e-4 |
+| b     | elicited     | hitchhikers  | Yes          | elicited > hitchhikers     |  2.65e-3 |
+| b     | real         | carroll_lear | Yes          | real < carroll_lear        |  2.16e-6 |
+| b     | real         | dahl_rowling | Yes          | real < dahl_rowling        |  2.96e-3 |
+| b     | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers |  9.41e-5 |
+| t     | elicited     | real         | Yes          | elicited < real            |  2.39e-7 |
+| t     | real         | carroll_lear | Yes          | real > carroll_lear        |  4.94e-6 |
+| t     | real         | dahl_rowling | Yes          | real > dahl_rowling        | 2.18e-11 |
+| t     | real         | gullivers    | Yes          | real > gullivers           |  8.99e-7 |
+| t     | hitchhikers  | dahl_rowling | Yes          | hitchhikers > dahl_rowling |  6.98e-4 |
+| d     | elicited     | gullivers    | Yes          | elicited < gullivers       |  1.68e-3 |
+| g     | elicited     | real         | Yes          | elicited > real            |  8.62e-5 |
+| g     | real         | hitchhikers  | Yes          | real < hitchhikers         |  2.78e-6 |
+| g     | real         | dahl_rowling | Yes          | real < dahl_rowling        |  4.29e-5 |
+| g     | real         | gullivers    | Yes          | real < gullivers           |  1.94e-6 |
+| f     | real         | carroll_lear | Yes          | real < carroll_lear        |  7.02e-4 |
+| f     | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers |  2.97e-3 |
+| v     | elicited     | real         | Yes          | elicited < real            |  2.14e-8 |
+| v     | elicited     | hitchhikers  | Yes          | elicited < hitchhikers     |  8.30e-4 |
+| v     | real         | dahl_rowling | Yes          | real > dahl_rowling        |  3.52e-4 |
+| v     | real         | gullivers    | Yes          | real > gullivers           | 5.66e-13 |
+| v     | hitchhikers  | dahl_rowling | Yes          | hitchhikers > dahl_rowling |  4.73e-3 |
+| v     | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers    |  2.88e-4 |
+| ð     | elicited     | real         | Yes          | elicited < real            | 4.38e-12 |
+| ð     | real         | hitchhikers  | Yes          | real > hitchhikers         | 4.38e-12 |
+| ð     | real         | dahl_rowling | Yes          | real > dahl_rowling        | 4.38e-12 |
+| ð     | real         | gullivers    | Yes          | real > gullivers           | 4.38e-12 |
+| s     | elicited     | real         | Yes          | elicited < real            |  1.60e-3 |
+| ʒ     | real         | carroll_lear | Yes          | real > carroll_lear        |  6.65e-8 |
+| ʒ     | real         | hitchhikers  | Yes          | real > hitchhikers         |  6.65e-8 |
+| ʒ     | real         | dahl_rowling | Yes          | real > dahl_rowling        |  6.65e-8 |
+| ʒ     | real         | gullivers    | Yes          | real > gullivers           |  6.65e-8 |
+| ʤ     | real         | gullivers    | Yes          | real > gullivers           |   0.00e0 |
+| ʤ     | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers   |  2.49e-3 |
+| ʤ     | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers    |  1.85e-4 |
+| m     | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers |  2.19e-3 |
+| n     | elicited     | real         | Yes          | elicited < real            |  5.84e-4 |
+| n     | real         | carroll_lear | Yes          | real > carroll_lear        |  8.59e-6 |
+| n     | real         | hitchhikers  | Yes          | real > hitchhikers         |  8.11e-4 |
+| n     | real         | dahl_rowling | Yes          | real > dahl_rowling        |  8.75e-4 |
+| n     | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers   |  1.31e-3 |
+| l     | elicited     | gullivers    | Yes          | elicited < gullivers       |  1.77e-6 |
+| l     | real         | hitchhikers  | Yes          | real < hitchhikers         |  8.56e-4 |
+| l     | real         | gullivers    | Yes          | real < gullivers           | 9.59e-14 |
+| l     | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers   |  1.04e-9 |
+| l     | hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers    |  4.90e-5 |
+| l     | dahl_rowling | gullivers    | Yes          | dahl_rowling < gullivers   |  2.38e-7 |
+| r     | carroll_lear | hitchhikers  | Yes          | carroll_lear < hitchhikers |  5.26e-4 |
+| r     | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers   |  3.47e-3 |
+| w     | elicited     | dahl_rowling | Yes          | elicited < dahl_rowling    |  1.99e-3 |
+| w     | real         | dahl_rowling | Yes          | real < dahl_rowling        |  9.83e-4 |
+| w     | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers   |  5.25e-4 |
+| j     | real         | carroll_lear | Yes          | real > carroll_lear        |  4.40e-3 |
+| j     | real         | gullivers    | Yes          | real > gullivers           |  4.78e-3 |
+| h     | elicited     | real         | Yes          | elicited < real            |  1.51e-3 |
+| h     | elicited     | hitchhikers  | Yes          | elicited < hitchhikers     |  3.63e-3 |
+| ŋ     | elicited     | real         | Yes          | elicited > real            |  2.02e-3 |
+| ŋ     | elicited     | gullivers    | Yes          | elicited > gullivers       |  4.97e-3 |
+| ɫ     | elicited     | real         | Yes          | elicited > real            |  1.41e-7 |
+| ɫ     | elicited     | hitchhikers  | Yes          | elicited > hitchhikers     |  4.25e-4 |
+| ɫ     | elicited     | gullivers    | Yes          | elicited > gullivers       |  1.52e-8 |
+| ɫ     | real         | carroll_lear | Yes          | real < carroll_lear        |  1.86e-6 |
+| ɫ     | real         | hitchhikers  | Yes          | real < hitchhikers         |  1.79e-3 |
+| ɫ     | real         | dahl_rowling | Yes          | real < dahl_rowling        |  7.77e-6 |
+| ɫ     | real         | gullivers    | Yes          | real > gullivers           |   0.00e0 |
+| ɫ     | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers |  1.55e-3 |
+| ɫ     | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers   |  2.64e-7 |
+| ɫ     | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers    |  8.09e-5 |
+| ɫ     | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers   |  6.25e-7 |
 * Question 5
 ** T-Tests
-| Test                          | Significant? | Result                   |  p-value |
-|-------------------------------+--------------+--------------------------+----------|
-| elicited vs. real             | Yes          | elicited > real          |  1.85e-4 |
-| elicited vs. carroll_lear     | No           | N/A                      |  2.56e-1 |
-| elicited vs. hitchhikers      | No           | N/A                      |  7.56e-2 |
-| elicited vs. dahl_rowling     | No           | N/A                      |  3.29e-2 |
-| elicited vs. gullivers        | Yes          | elicited < gullivers     |  5.68e-5 |
-| real vs. carroll_lear         | Yes          | real < carroll_lear      |  5.14e-7 |
-| real vs. hitchhikers          | Yes          | real < hitchhikers       | 7.25e-10 |
-| real vs. dahl_rowling         | Yes          | real < dahl_rowling      |  3.62e-9 |
-| real vs. gullivers            | Yes          | real < gullivers         | 5.00e-15 |
-| carroll_lear vs. hitchhikers  | No           | N/A                      |  2.04e-1 |
-| carroll_lear vs. dahl_rowling | No           | N/A                      |  9.66e-2 |
-| carroll_lear vs. gullivers    | Yes          | carroll_lear < gullivers |  2.80e-4 |
-| hitchhikers vs. dahl_rowling  | No           | N/A                      |  2.92e-1 |
-| hitchhikers vs. gullivers     | Yes          | hitchhikers < gullivers  |  2.88e-3 |
-| dahl_rowling vs. gullivers    | No           | N/A                      |  1.79e-2 |
+| Sample 1     | Sample 2     | Significant? | Result                   |  p-value |
+|--------------+--------------+--------------+--------------------------+----------|
+| elicited     | real         | Yes          | elicited > real          |  1.85e-4 |
+| elicited     | carroll_lear | No           | N/A                      |  2.56e-1 |
+| elicited     | hitchhikers  | No           | N/A                      |  7.56e-2 |
+| elicited     | dahl_rowling | No           | N/A                      |  3.29e-2 |
+| elicited     | gullivers    | Yes          | elicited < gullivers     |  5.68e-5 |
+| real         | carroll_lear | Yes          | real < carroll_lear      |  5.14e-7 |
+| real         | hitchhikers  | Yes          | real < hitchhikers       | 7.25e-10 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling      |  3.62e-9 |
+| real         | gullivers    | Yes          | real < gullivers         | 5.00e-15 |
+| carroll_lear | hitchhikers  | No           | N/A                      |  2.04e-1 |
+| carroll_lear | dahl_rowling | No           | N/A                      |  9.66e-2 |
+| carroll_lear | gullivers    | Yes          | carroll_lear < gullivers |  2.80e-4 |
+| hitchhikers  | dahl_rowling | No           | N/A                      |  2.92e-1 |
+| hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers  |  2.88e-3 |
+| dahl_rowling | gullivers    | No           | N/A                      |  1.79e-2 |
 * Question 9
 ** T-Tests
-| Test                          | Significant? | Result                   | p-value |
-|-------------------------------+--------------+--------------------------+---------|
-| elicited vs. real             | Yes          | elicited < real          | 5.65e-5 |
-| elicited vs. carroll_lear     | No           | N/A                      | 1.27e-2 |
-| elicited vs. hitchhikers      | Yes          | elicited < hitchhikers   | 6.95e-5 |
-| elicited vs. dahl_rowling     | Yes          | elicited < dahl_rowling  | 1.42e-3 |
-| elicited vs. gullivers        | Yes          | elicited < gullivers     | 4.22e-8 |
-| real vs. carroll_lear         | No           | N/A                      | 3.35e-1 |
-| real vs. hitchhikers          | No           | N/A                      | 5.04e-2 |
-| real vs. dahl_rowling         | No           | N/A                      | 3.04e-1 |
-| real vs. gullivers            | Yes          | real < gullivers         | 1.45e-4 |
-| carroll_lear vs. hitchhikers  | No           | N/A                      | 6.84e-2 |
-| carroll_lear vs. dahl_rowling | No           | N/A                      | 2.51e-1 |
-| carroll_lear vs. gullivers    | Yes          | carroll_lear < gullivers | 1.99e-3 |
-| hitchhikers vs. dahl_rowling  | No           | N/A                      | 2.01e-1 |
-| hitchhikers vs. gullivers     | No           | N/A                      | 8.83e-2 |
-| dahl_rowling vs. gullivers    | No           | N/A                      | 1.28e-2 |
+| Sample 1     | Sample 2     | Significant? | Result                   | p-value |
+|--------------+--------------+--------------+--------------------------+---------|
+| elicited     | real         | Yes          | elicited < real          | 5.65e-5 |
+| elicited     | carroll_lear | No           | N/A                      | 1.27e-2 |
+| elicited     | hitchhikers  | Yes          | elicited < hitchhikers   | 6.95e-5 |
+| elicited     | dahl_rowling | Yes          | elicited < dahl_rowling  | 1.42e-3 |
+| elicited     | gullivers    | Yes          | elicited < gullivers     | 4.22e-8 |
+| real         | carroll_lear | No           | N/A                      | 3.35e-1 |
+| real         | hitchhikers  | No           | N/A                      | 5.04e-2 |
+| real         | dahl_rowling | No           | N/A                      | 3.04e-1 |
+| real         | gullivers    | Yes          | real < gullivers         | 1.45e-4 |
+| carroll_lear | hitchhikers  | No           | N/A                      | 6.84e-2 |
+| carroll_lear | dahl_rowling | No           | N/A                      | 2.51e-1 |
+| carroll_lear | gullivers    | Yes          | carroll_lear < gullivers | 1.99e-3 |
+| hitchhikers  | dahl_rowling | No           | N/A                      | 2.01e-1 |
+| hitchhikers  | gullivers    | No           | N/A                      | 8.83e-2 |
+| dahl_rowling | gullivers    | No           | N/A                      | 1.28e-2 |
 * Question 11
 ** T-Tests
-| Test                          | Significant? | Result           | p-value |
-|-------------------------------+--------------+------------------+---------|
-| elicited vs. real             | No           | N/A              | 1.73e-1 |
-| elicited vs. carroll_lear     | No           | N/A              | 1.27e-1 |
-| elicited vs. hitchhikers      | No           | N/A              | 2.06e-1 |
-| elicited vs. dahl_rowling     | No           | N/A              | 2.78e-1 |
-| elicited vs. gullivers        | No           | N/A              | 1.10e-2 |
-| real vs. carroll_lear         | No           | N/A              | 6.23e-3 |
-| real vs. hitchhikers          | No           | N/A              | 1.26e-2 |
-| real vs. dahl_rowling         | No           | N/A              | 4.31e-2 |
-| real vs. gullivers            | Yes          | real > gullivers | 7.91e-6 |
-| carroll_lear vs. hitchhikers  | No           | N/A              | 3.51e-1 |
-| carroll_lear vs. dahl_rowling | No           | N/A              | 2.96e-1 |
-| carroll_lear vs. gullivers    | No           | N/A              | 1.38e-1 |
-| hitchhikers vs. dahl_rowling  | No           | N/A              | 4.25e-1 |
-| hitchhikers vs. gullivers     | No           | N/A              | 5.92e-2 |
-| dahl_rowling vs. gullivers    | No           | N/A              | 5.07e-2 |
+| Sample 1     | Sample 2     | Significant? | Result           | p-value |
+|--------------+--------------+--------------+------------------+---------|
+| elicited     | real         | No           | N/A              | 1.73e-1 |
+| elicited     | carroll_lear | No           | N/A              | 1.27e-1 |
+| elicited     | hitchhikers  | No           | N/A              | 2.06e-1 |
+| elicited     | dahl_rowling | No           | N/A              | 2.78e-1 |
+| elicited     | gullivers    | No           | N/A              | 1.10e-2 |
+| real         | carroll_lear | No           | N/A              | 6.23e-3 |
+| real         | hitchhikers  | No           | N/A              | 1.26e-2 |
+| real         | dahl_rowling | No           | N/A              | 4.31e-2 |
+| real         | gullivers    | Yes          | real > gullivers | 7.91e-6 |
+| carroll_lear | hitchhikers  | No           | N/A              | 3.51e-1 |
+| carroll_lear | dahl_rowling | No           | N/A              | 2.96e-1 |
+| carroll_lear | gullivers    | No           | N/A              | 1.38e-1 |
+| hitchhikers  | dahl_rowling | No           | N/A              | 4.25e-1 |
+| hitchhikers  | gullivers    | No           | N/A              | 5.92e-2 |
+| dahl_rowling | gullivers    | No           | N/A              | 5.07e-2 |
+* Question 13
+
+| Cluster | Sample 1     | Sample 2     | Significant? | Result                      |  p-value |
+|---------+--------------+--------------+--------------+-----------------------------+----------|
+| spl     | real         | carroll_lear | Yes          | real > carroll_lear         |  7.81e-4 |
+| spl     | real         | hitchhikers  | Yes          | real > hitchhikers          |  7.81e-4 |
+| spr     | elicited     | real         | Yes          | elicited < real             |  4.07e-3 |
+| spr     | real         | carroll_lear | Yes          | real > carroll_lear         |  4.07e-3 |
+| spr     | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.07e-3 |
+| spr     | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.07e-3 |
+| str     | real         | carroll_lear | Yes          | real > carroll_lear         | 5.55e-16 |
+| skr     | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.54e-4 |
+| pr      | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| pr      | real         | dahl_rowling | Yes          | real > dahl_rowling         |   0.00e0 |
+| pr      | real         | gullivers    | Yes          | real > gullivers            |  3.21e-3 |
+| pj      | elicited     | real         | Yes          | elicited < real             |  2.33e-3 |
+| pj      | real         | carroll_lear | Yes          | real > carroll_lear         |  2.33e-3 |
+| pj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
+| pj      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+| br      | elicited     | real         | Yes          | elicited < real             | 7.28e-11 |
+| br      | real         | dahl_rowling | Yes          | real > dahl_rowling         | 7.28e-11 |
+| bj      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.54e-4 |
+| bj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.54e-4 |
+| bj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.54e-4 |
+| tr      | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| tr      | carroll_lear | hitchhikers  | Yes          | carroll_lear < hitchhikers  |  1.27e-3 |
+| tj      | elicited     | real         | Yes          | elicited < real             |  4.54e-4 |
+| tj      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.54e-4 |
+| tj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.54e-4 |
+| tj      | real         | gullivers    | Yes          | real > gullivers            |  4.54e-4 |
+| tw      | elicited     | real         | Yes          | elicited < real             |  4.07e-3 |
+| tw      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.07e-3 |
+| tw      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.07e-3 |
+| tw      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.07e-3 |
+| tw      | real         | gullivers    | Yes          | real > gullivers            |  4.07e-3 |
+| dr      | real         | carroll_lear | Yes          | real > carroll_lear         |  1.60e-9 |
+| dr      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.60e-9 |
+| dr      | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers    |  2.18e-3 |
+| dr      | dahl_rowling | gullivers    | Yes          | dahl_rowling < gullivers    |  2.18e-3 |
+| dj      | elicited     | real         | Yes          | elicited < real             |  1.35e-3 |
+| dj      | real         | carroll_lear | Yes          | real > carroll_lear         |  1.35e-3 |
+| dj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.35e-3 |
+| dj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.35e-3 |
+| dj      | real         | gullivers    | Yes          | real > gullivers            |  1.35e-3 |
+| kl      | real         | hitchhikers  | Yes          | real > hitchhikers          | 5.55e-14 |
+| kl      | hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers     |  3.87e-3 |
+| kj      | elicited     | real         | Yes          | elicited < real             | 9.53e-10 |
+| kj      | real         | hitchhikers  | Yes          | real > hitchhikers          | 9.53e-10 |
+| kj      | real         | dahl_rowling | Yes          | real > dahl_rowling         | 9.53e-10 |
+| kj      | real         | gullivers    | Yes          | real > gullivers            | 9.53e-10 |
+| gl      | real         | carroll_lear | Yes          | real > carroll_lear         |  7.81e-4 |
+| gl      | real         | gullivers    | Yes          | real < gullivers            |  5.22e-4 |
+| gl      | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers    |  3.99e-4 |
+| gl      | hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers     |  2.72e-3 |
+| gj      | real         | carroll_lear | Yes          | real > carroll_lear         |  2.33e-3 |
+| gj      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+| mj      | elicited     | real         | Yes          | elicited < real             |  1.55e-4 |
+| mj      | real         | carroll_lear | Yes          | real > carroll_lear         |  1.55e-4 |
+| mj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.55e-4 |
+| mj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.55e-4 |
+| mj      | real         | gullivers    | Yes          | real > gullivers            |  1.55e-4 |
+| nj      | elicited     | real         | Yes          | elicited < real             |  4.74e-7 |
+| nj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.74e-7 |
+| nj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.74e-7 |
+| nj      | real         | gullivers    | Yes          | real > gullivers            |  4.74e-7 |
+| fl      | real         | carroll_lear | Yes          | real < carroll_lear         |  4.76e-3 |
+| fj      | elicited     | real         | Yes          | elicited < real             |  7.81e-4 |
+| fj      | real         | carroll_lear | Yes          | real > carroll_lear         |  7.81e-4 |
+| fj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  7.81e-4 |
+| fj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  7.81e-4 |
+| fj      | real         | gullivers    | Yes          | real > gullivers            |  7.81e-4 |
+| θr      | elicited     | real         | Yes          | elicited < real             |  7.81e-4 |
+| θr      | real         | carroll_lear | Yes          | real > carroll_lear         |  7.81e-4 |
+| θr      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  7.81e-4 |
+| sl      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.74e-7 |
+| sj      | elicited     | real         | Yes          | elicited < real             |  4.07e-3 |
+| sj      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.07e-3 |
+| sj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.07e-3 |
+| sj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.07e-3 |
+| sj      | real         | gullivers    | Yes          | real > gullivers            |  4.07e-3 |
+| sw      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.55e-4 |
+| sw      | real         | dahl_rowling | Yes          | real < dahl_rowling         |  3.19e-3 |
+| sw      | real         | gullivers    | Yes          | real > gullivers            |  1.55e-4 |
+| sw      | hitchhikers  | dahl_rowling | Yes          | hitchhikers < dahl_rowling  |  2.19e-3 |
+| sw      | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers    |  2.19e-3 |
+| sp      | real         | hitchhikers  | Yes          | real > hitchhikers          |   0.00e0 |
+| sp      | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| st      | elicited     | real         | Yes          | elicited < real             |   0.00e0 |
+| st      | real         | carroll_lear | Yes          | real > carroll_lear         |  7.28e-4 |
+| st      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  3.66e-4 |
+| st      | real         | gullivers    | Yes          | real > gullivers            |  8.14e-4 |
+| sk      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.48e-9 |
+| sk      | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers  |  3.87e-3 |
+| sm      | elicited     | real         | Yes          | elicited < real             |  4.07e-3 |
+| sm      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.07e-3 |
+| sm      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.07e-3 |
+| sm      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.07e-3 |
+| sm      | real         | gullivers    | Yes          | real > gullivers            |  4.07e-3 |
+| lj      | elicited     | real         | Yes          | elicited < real             |  2.33e-3 |
+| lj      | real         | carroll_lear | Yes          | real > carroll_lear         |  2.33e-3 |
+| lj      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
+| lj      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
+| lj      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+| p       | elicited     | hitchhikers  | Yes          | elicited > hitchhikers      |  2.43e-3 |
+| p       | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.80e-7 |
+| p       | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers  |  4.07e-4 |
+| p       | hitchhikers  | dahl_rowling | Yes          | hitchhikers < dahl_rowling  |  2.79e-4 |
+| b       | elicited     | real         | Yes          | elicited > real             |  1.24e-5 |
+| b       | elicited     | hitchhikers  | Yes          | elicited > hitchhikers      |  1.38e-3 |
+| b       | real         | carroll_lear | Yes          | real < carroll_lear         |  2.17e-5 |
+| b       | real         | dahl_rowling | Yes          | real < dahl_rowling         |  2.75e-4 |
+| b       | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers  |  1.08e-3 |
+| t       | elicited     | real         | Yes          | elicited < real             |  3.94e-3 |
+| t       | real         | dahl_rowling | Yes          | real > dahl_rowling         |  8.82e-7 |
+| t       | real         | gullivers    | Yes          | real > gullivers            | 4.36e-10 |
+| t       | carroll_lear | dahl_rowling | Yes          | carroll_lear > dahl_rowling |  2.80e-3 |
+| t       | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers    |  6.78e-4 |
+| k       | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.02e-4 |
+| k       | real         | gullivers    | Yes          | real > gullivers            |  4.22e-4 |
+| g       | elicited     | real         | Yes          | elicited > real             |  3.28e-3 |
+| g       | real         | carroll_lear | Yes          | real < carroll_lear         |  3.23e-3 |
+| g       | real         | hitchhikers  | Yes          | real < hitchhikers          |  5.59e-5 |
+| g       | real         | dahl_rowling | Yes          | real < dahl_rowling         |  2.12e-3 |
+| g       | real         | gullivers    | Yes          | real < gullivers            |  3.16e-3 |
+| v       | elicited     | real         | Yes          | elicited < real             |  1.92e-5 |
+| v       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  2.62e-3 |
+| v       | real         | carroll_lear | Yes          | real > carroll_lear         |  1.11e-7 |
+| v       | real         | dahl_rowling | Yes          | real > dahl_rowling         |  3.44e-4 |
+| v       | real         | gullivers    | Yes          | real > gullivers            |  1.41e-7 |
+| v       | carroll_lear | hitchhikers  | Yes          | carroll_lear < hitchhikers  |  1.08e-3 |
+| v       | hitchhikers  | dahl_rowling | Yes          | hitchhikers > dahl_rowling  |  4.33e-3 |
+| v       | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers     |  1.10e-3 |
+| θ       | real         | carroll_lear | Yes          | real > carroll_lear         | 1.22e-10 |
+| θ       | real         | gullivers    | Yes          | real > gullivers            | 1.22e-10 |
+| ð       | elicited     | real         | Yes          | elicited < real             | 3.34e-12 |
+| ð       | real         | hitchhikers  | Yes          | real > hitchhikers          | 3.34e-12 |
+| ð       | real         | dahl_rowling | Yes          | real > dahl_rowling         | 3.34e-12 |
+| ð       | real         | gullivers    | Yes          | real > gullivers            | 3.34e-12 |
+| s       | elicited     | real         | Yes          | elicited < real             | 8.99e-15 |
+| s       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  4.75e-3 |
+| s       | real         | carroll_lear | Yes          | real > carroll_lear         |  3.08e-7 |
+| s       | real         | dahl_rowling | Yes          | real > dahl_rowling         | 4.06e-11 |
+| s       | real         | gullivers    | Yes          | real > gullivers            |  2.89e-3 |
+| z       | elicited     | gullivers    | Yes          | elicited > gullivers        |  7.17e-4 |
+| z       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| z       | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers    |  3.88e-3 |
+| ʃ       | elicited     | gullivers    | Yes          | elicited > gullivers        |  1.26e-3 |
+| ʃ       | real         | carroll_lear | Yes          | real > carroll_lear         |  3.26e-4 |
+| ʃ       | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.14e-5 |
+| ʃ       | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.30e-4 |
+| ʃ       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| ʒ       | real         | carroll_lear | Yes          | real > carroll_lear         |  5.94e-8 |
+| ʒ       | real         | hitchhikers  | Yes          | real > hitchhikers          |  5.94e-8 |
+| ʒ       | real         | dahl_rowling | Yes          | real > dahl_rowling         |  5.94e-8 |
+| ʒ       | real         | gullivers    | Yes          | real > gullivers            |  5.94e-8 |
+| ʧ       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| ʤ       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  2.62e-3 |
+| ʤ       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| ʤ       | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers    |  1.24e-3 |
+| ʤ       | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers     |  1.36e-4 |
+| n       | elicited     | carroll_lear | Yes          | elicited > carroll_lear     |  2.23e-3 |
+| n       | real         | carroll_lear | Yes          | real > carroll_lear         |  2.31e-7 |
+| n       | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.05e-5 |
+| n       | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers    |  1.20e-4 |
+| n       | hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers     |  2.94e-4 |
+| n       | dahl_rowling | gullivers    | Yes          | dahl_rowling < gullivers    |  4.28e-3 |
+| l       | real         | hitchhikers  | Yes          | real < hitchhikers          |  3.69e-3 |
+| l       | carroll_lear | hitchhikers  | Yes          | carroll_lear < hitchhikers  |  1.51e-3 |
+| r       | elicited     | real         | Yes          | elicited < real             |  2.64e-3 |
+| r       | real         | hitchhikers  | Yes          | real > hitchhikers          |  6.76e-5 |
+| r       | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.51e-3 |
+| w       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| w       | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers    |  2.19e-3 |
+| w       | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers     |  1.27e-3 |
+| w       | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers    |  1.24e-3 |
+| j       | real         | carroll_lear | Yes          | real > carroll_lear         | 7.28e-11 |
+| j       | real         | dahl_rowling | Yes          | real > dahl_rowling         | 7.28e-11 |
+| h       | elicited     | real         | Yes          | elicited < real             |  1.99e-4 |
+| h       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  2.08e-3 |
+|         | elicited     | real         | Yes          | elicited < real             |  9.56e-4 |
+|         | real         | carroll_lear | Yes          | real > carroll_lear         | 3.42e-12 |
+|         | real         | hitchhikers  | Yes          | real > hitchhikers          | 5.50e-11 |
+|         | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.16e-9 |
+|         | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+
+* Question 14
+
+| Cluster | Sample 1     | Sample 2     | Significant? | Result                      |  p-value |
+|---------+--------------+--------------+--------------+-----------------------------+----------|
+|         | elicited     | real         | Yes          | elicited > real             |  1.21e-3 |
+|         | elicited     | hitchhikers  | Yes          | elicited > hitchhikers      |  8.40e-4 |
+|         | elicited     | dahl_rowling | Yes          | elicited > dahl_rowling     |  9.92e-4 |
+|         | elicited     | gullivers    | Yes          | elicited > gullivers        |  1.75e-9 |
+|         | real         | gullivers    | Yes          | real > gullivers            |  2.00e-7 |
+|         | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers    |  3.70e-4 |
+|         | hitchhikers  | gullivers    | Yes          | hitchhikers > gullivers     |  1.13e-3 |
+|         | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers    |  3.05e-3 |
+| t       | elicited     | real         | Yes          | elicited < real             |  1.83e-7 |
+| t       | real         | carroll_lear | Yes          | real > carroll_lear         |  4.96e-8 |
+| t       | real         | gullivers    | Yes          | real > gullivers            |  1.62e-3 |
+| g       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  6.93e-4 |
+| g       | elicited     | gullivers    | Yes          | elicited < gullivers        |  2.18e-3 |
+| g       | real         | hitchhikers  | Yes          | real < hitchhikers          |  8.35e-4 |
+| g       | real         | gullivers    | Yes          | real < gullivers            |  2.74e-3 |
+| g       | carroll_lear | hitchhikers  | Yes          | carroll_lear < hitchhikers  |  1.08e-3 |
+| g       | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers    |  2.96e-3 |
+| f       | real         | hitchhikers  | Yes          | real > hitchhikers          | 2.60e-11 |
+| v       | elicited     | real         | Yes          | elicited < real             |   0.00e0 |
+| v       | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| v       | real         | hitchhikers  | Yes          | real > hitchhikers          |   0.00e0 |
+| v       | real         | dahl_rowling | Yes          | real > dahl_rowling         |   0.00e0 |
+| v       | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| θ       | real         | carroll_lear | Yes          | real > carroll_lear         |  1.60e-9 |
+| s       | carroll_lear | dahl_rowling | Yes          | carroll_lear > dahl_rowling |  2.87e-3 |
+| s       | carroll_lear | gullivers    | Yes          | carroll_lear > gullivers    |  3.38e-3 |
+| z       | elicited     | dahl_rowling | Yes          | elicited < dahl_rowling     |  1.36e-3 |
+| z       | real         | dahl_rowling | Yes          | real < dahl_rowling         |  4.85e-3 |
+| z       | dahl_rowling | gullivers    | Yes          | dahl_rowling > gullivers    |  1.91e-3 |
+| ʧ       | elicited     | real         | Yes          | elicited < real             |  7.50e-9 |
+| ʧ       | real         | hitchhikers  | Yes          | real > hitchhikers          |  7.50e-9 |
+| ʤ       | real         | carroll_lear | Yes          | real > carroll_lear         | 2.58e-13 |
+| ʤ       | real         | hitchhikers  | Yes          | real > hitchhikers          | 2.58e-13 |
+| ʤ       | real         | dahl_rowling | Yes          | real > dahl_rowling         | 2.58e-13 |
+| ʤ       | real         | gullivers    | Yes          | real > gullivers            | 2.58e-13 |
+| m       | real         | carroll_lear | Yes          | real < carroll_lear         |  3.04e-4 |
+| m       | carroll_lear | hitchhikers  | Yes          | carroll_lear > hitchhikers  |  1.59e-4 |
+| n       | elicited     | real         | Yes          | elicited < real             |  8.09e-4 |
+| n       | elicited     | hitchhikers  | Yes          | elicited < hitchhikers      |  4.29e-3 |
+| ŋ       | elicited     | real         | Yes          | elicited > real             |  1.00e-3 |
+| l       | elicited     | real         | Yes          | elicited < real             |  1.06e-4 |
+| l       | elicited     | gullivers    | Yes          | elicited < gullivers        |  5.14e-7 |
+| l       | real         | gullivers    | Yes          | real < gullivers            |  4.32e-5 |
+| l       | carroll_lear | gullivers    | Yes          | carroll_lear < gullivers    |  4.71e-6 |
+| l       | hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers     |  3.70e-4 |
+| l       | dahl_rowling | gullivers    | Yes          | dahl_rowling < gullivers    |  3.37e-6 |
+| pt      | elicited     | real         | Yes          | elicited < real             |  1.35e-3 |
+| pt      | real         | carroll_lear | Yes          | real > carroll_lear         |  1.35e-3 |
+| pt      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.35e-3 |
+| pt      | real         | gullivers    | Yes          | real > gullivers            |  1.35e-3 |
+| kt      | elicited     | real         | Yes          | elicited < real             | 5.55e-14 |
+| kt      | real         | carroll_lear | Yes          | real > carroll_lear         | 5.55e-14 |
+| kt      | real         | hitchhikers  | Yes          | real > hitchhikers          | 5.55e-14 |
+| kt      | real         | dahl_rowling | Yes          | real > dahl_rowling         | 5.55e-14 |
+| kt      | real         | gullivers    | Yes          | real > gullivers            | 5.55e-14 |
+| ks      | elicited     | real         | Yes          | elicited < real             |  4.74e-7 |
+| ks      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.74e-7 |
+| ks      | real         | gullivers    | Yes          | real > gullivers            |  4.74e-7 |
+| mp      | real         | gullivers    | Yes          | real > gullivers            |  7.81e-4 |
+| nt      | elicited     | real         | Yes          | elicited < real             |  3.29e-5 |
+| nt      | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| nt      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.78e-3 |
+| nt      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  3.99e-4 |
+| nt      | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| nd      | elicited     | real         | Yes          | elicited < real             |   0.00e0 |
+| nd      | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| nʧ      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
+| nʧ      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
+| nʧ      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+| nʤ      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.35e-3 |
+| nʤ      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.35e-3 |
+| nʤ      | real         | gullivers    | Yes          | real > gullivers            |  1.35e-3 |
+| ns      | elicited     | real         | Yes          | elicited < real             |   0.00e0 |
+| ns      | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| ns      | real         | dahl_rowling | Yes          | real > dahl_rowling         |   0.00e0 |
+| ns      | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| ŋk      | real         | hitchhikers  | Yes          | real > hitchhikers          |  7.99e-7 |
+| ŋk      | real         | gullivers    | Yes          | real > gullivers            |  7.99e-7 |
+| lt      | elicited     | real         | Yes          | elicited < real             |  4.54e-4 |
+| lt      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.54e-4 |
+| lt      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.54e-4 |
+| ld      | elicited     | real         | Yes          | elicited < real             |  7.99e-7 |
+| ld      | real         | carroll_lear | Yes          | real > carroll_lear         |  7.99e-7 |
+| lf      | elicited     | real         | Yes          | elicited < real             |  1.35e-3 |
+| lf      | real         | carroll_lear | Yes          | real > carroll_lear         |  1.35e-3 |
+| lf      | real         | hitchhikers  | Yes          | real > hitchhikers          |  1.35e-3 |
+| lf      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  1.35e-3 |
+| lf      | real         | gullivers    | Yes          | real > gullivers            |  1.35e-3 |
+| lv      | elicited     | real         | Yes          | elicited < real             |  4.07e-3 |
+| lv      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.07e-3 |
+| lv      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.07e-3 |
+| lv      | real         | gullivers    | Yes          | real > gullivers            |  4.07e-3 |
+| ft      | elicited     | real         | Yes          | elicited < real             |  4.54e-4 |
+| ft      | real         | carroll_lear | Yes          | real > carroll_lear         |  4.54e-4 |
+| ft      | real         | hitchhikers  | Yes          | real > hitchhikers          |  4.54e-4 |
+| ft      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  4.54e-4 |
+| st      | elicited     | real         | Yes          | elicited < real             |   0.00e0 |
+| st      | real         | carroll_lear | Yes          | real > carroll_lear         |   0.00e0 |
+| st      | real         | dahl_rowling | Yes          | real > dahl_rowling         |   0.00e0 |
+| st      | real         | gullivers    | Yes          | real > gullivers            |   0.00e0 |
+| sk      | elicited     | real         | Yes          | elicited < real             |  2.33e-3 |
+| sk      | real         | carroll_lear | Yes          | real > carroll_lear         |  2.33e-3 |
+| sk      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
+| zd      | elicited     | real         | Yes          | elicited < real             |  2.33e-3 |
+| zd      | real         | carroll_lear | Yes          | real > carroll_lear         |  2.33e-3 |
+| zd      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
+| zd      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
+| zd      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |

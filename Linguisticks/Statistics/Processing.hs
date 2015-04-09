@@ -74,5 +74,25 @@ sampleCodaConsonants = sampleConsonants (\(_, _, c, _) -> c)
 sampleOnsetConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleOnsetConsonants = sampleConsonants (\(o, _, _, _) -> o)
 
+sampleCluster :: ((String, String, String, U.Stress) -> String) -> String -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleCluster f cluster = let gatherClusters :: [U.Syllables] -> [Double]
+                              gatherClusters []     = []
+                              gatherClusters (s:ss) = let sylls = U.syllsToList s
+                                                          subsylls = map f sylls
+                                                          clusterCount :: [Double]
+                                                          clusterCount = map
+                                                                         (fromIntegral
+                                                                          . fromEnum
+                                                                          . (== cluster))
+                                                                         subsylls
+                                                      in clusterCount ++ (gatherClusters ss)
+                          in V.fromList . gatherClusters . rights . map U.wordSyllables
+
+sampleOnsetCluster :: String -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleOnsetCluster = sampleCluster (\(o, _, _, _) -> o)
+
+sampleCodaCluster :: String -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleCodaCluster = sampleCluster (\(_, _, c, _) -> c)
+
 twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
 twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)

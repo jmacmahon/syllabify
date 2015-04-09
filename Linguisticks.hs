@@ -35,18 +35,28 @@ cmpSign GT = '>'
 significance p | p < 0.005 = "Yes"
                | otherwise = "No"
 
-format (n1, n2, p, cmp) | p < 0.005 = printf "| %s vs. %s | %s | %s %c %s | %.2e |\n" n1 n2 (significance p) n1 (cmpSign cmp) n2 p
-                        | otherwise = printf "| %s vs. %s | %s | N/A | %.2e |\n" n1 n2 (significance p) p
+format (n1, n2, p, cmp) | p < 0.005 = printf "| %s | %s | %s | %s %c %s | %.2e |\n" n1 n2 (significance p) n1 (cmpSign cmp) n2 p
+                        | otherwise = printf "| %s | %s | %s | N/A | %.2e |\n" n1 n2 (significance p) p
 
-formatConsonant (c, n1, n2, p, cmp) = printf "| %c | %s vs. %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
+formatConsonant (c, n1, n2, p, cmp) = printf "| %c | %s | %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
+
+formatCluster (c, n1, n2, p, cmp) = printf "| %s | %s | %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
 
 printTests :: IO [(String, String, Double, Ordering)] -> IO ()
 printTests res = do results <- res
                     sequence $ map format results
                     return ()
 
---{-
+
 main = do parsed <- parsed_all
-          sequence $ map formatConsonant $ concat $ map (\c -> (map (\(n1, n2, p, s) -> (c, n1, n2, p, s)) $ filter (\(_, _, p, _) -> p < 0.005) $ An.tTest (Pr.sampleConsonantRatio c) parsed)) Pr.consonants
-          return ()
----}
+          let results :: [(String, String, String, Double, Ordering)]
+              results = do cluster <- Par.validCodas
+                           let result = do r <- An.tTest (Pr.sampleCodaCluster cluster) parsed
+                                           return $ (\(n1, n2, p, o) -> (cluster, n1, n2, p, o)) r
+                               filteredResult = filter (\(_, _, _, p, _) -> p < 0.005) result
+                           filteredResult
+          sequence_ $ map formatCluster $ results
+
+{-
+main = sequence_ $ map putStrLn [ons ++ nuc ++ cod | ons <- Par.validOnsets, nuc <- Par.validNuclei, cod <- Par.validCodas]
+-}
