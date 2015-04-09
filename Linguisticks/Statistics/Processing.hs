@@ -5,6 +5,7 @@ import qualified Linguisticks.Util as U
 import qualified Data.Vector.Unboxed as V
 import qualified Statistics.Sample as S
 import Data.Either ( rights )
+import Debug.Trace ( trace )
 
 buildSyllablesSample :: (U.Syllables -> Double) -> [U.ParsedWord U.Syllables] -> S.Sample
 buildSyllablesSample f = V.fromList . map f . rights . map U.wordSyllables
@@ -40,12 +41,12 @@ cvRatio w = (consonantLength $ U.wordTranscription w) / (vowelLength $ U.wordTra
 sampleCVRatio :: [U.Word a] -> S.Sample
 sampleCVRatio = V.fromList . map cvRatio
 
-consonantRatio :: Char -> U.Word a -> Double
+consonantRatio :: Char -> U.ParsedWord U.Syllables -> Double
 consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTranscription w
-                         wLength = length $ U.wordTranscription w
+                         wLength = length $ U.syllsToList $ U.fromRight $ U.wordSyllables w
                      in (fromIntegral consonantLength) / (fromIntegral wLength)
 
-sampleConsonantRatio :: Char -> [U.Word a] -> S.Sample
+sampleConsonantRatio :: Char -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleConsonantRatio c = V.fromList . map (consonantRatio c)
 
 sampleSchwa :: [U.ParsedWord U.Syllables] -> S.Sample

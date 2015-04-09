@@ -40,22 +40,40 @@ format (n1, n2, p, cmp) | p < 0.005 = printf "| %s | %s | %s | %s %c %s | %.2e |
 
 formatConsonant (c, n1, n2, p, cmp) = printf "| %c | %s | %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
 
-formatCluster (c, n1, n2, p, cmp) = printf "| %s | %s | %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
+formatParam (c, n1, n2, p, cmp) = printf "| %s | %s | %s | %s | %s %c %s | %.2e |\n" c n1 n2 (significance p) n1 (cmpSign cmp) n2 p
 
 printTests :: IO [(String, String, Double, Ordering)] -> IO ()
 printTests res = do results <- res
-                    sequence $ map format results
-                    return ()
+                    sequence_ $ map format results
 
+runTests pr = printTests $ fmap (An.tTest pr) parsed_all
 
-main = do parsed <- parsed_all
-          let results :: [(String, String, String, Double, Ordering)]
-              results = do cluster <- Par.validCodas
-                           let result = do r <- An.tTest (Pr.sampleCodaCluster cluster) parsed
-                                           return $ (\(n1, n2, p, o) -> (cluster, n1, n2, p, o)) r
-                               filteredResult = filter (\(_, _, _, p, _) -> p < 0.005) result
-                           filteredResult
-          sequence_ $ map formatCluster $ results
+formatConfidence (n, u, l) = printf "| %s | %.2f | %.2f |\n" n u l
+formatParamConfidence (c, n, u, l) = printf "| %s | %s | %.3f | %.3f |\n" c n u l
+
+printMeans :: [(String, Double, Double)] -> IO ()
+printMeans results = sequence_ $ map formatConfidence results
+
+runMeans pr = fmap (An.meanConfidenceIntervals 0.99 pr) parsed_all >>= printMeans
+
+runParametrisedMeans pr params = do parsed <- parsed_all
+                                    let results :: [(String, String, Double, Double)]
+                                        results = do param <- params
+                                                     let result = do r <- An.meanConfidenceIntervals 0.99 (pr param) parsed
+                                                                     return $ (\(n, u, l) -> (param, n, u, l)) r
+                                                     result
+                                    sequence_ $ map formatParamConfidence results
+
+runParametrisedTests pr params = do parsed <- parsed_all
+                                    let results :: [(String, String, String, Double, Ordering)]
+                                        results = do param <- params
+                                                     let result = do r <- An.tTest (pr param) parsed
+                                                                     return $ (\(n1, n2, p, o) -> (param, n1, n2, p, o)) r
+                                                         filteredResult = filter (\(_, _, _, p, _) -> p < 0.005) result
+                                                     filteredResult
+                                    sequence_ $ map formatParam $ results
+
+main = runParametrisedMeans (Pr.sampleConsonantRatio . head) (map return Pr.consonants)
 
 {-
 main = sequence_ $ map putStrLn [ons ++ nuc ++ cod | ons <- Par.validOnsets, nuc <- Par.validNuclei, cod <- Par.validCodas]

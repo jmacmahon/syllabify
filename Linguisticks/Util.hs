@@ -38,6 +38,10 @@ maybeP :: ParsecT s u m (Maybe a) -> ParsecT s u m a
 maybeP parser = do parsed <- parser
                    maybe (fail "got nothing") return parsed
 
+eitherToList :: Either a b -> [b]
+eitherToList (Left  _) = []
+eitherToList (Right a) = [a]
+
 -- ADT for a Syllable.
 data Stress = NoStress | Secondary | Primary deriving (Eq, Show, Ord, Enum)
 

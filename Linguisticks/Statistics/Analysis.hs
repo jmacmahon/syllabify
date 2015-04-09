@@ -22,6 +22,12 @@ tTest :: ([U.Word a] -> S.Sample) -> [(String, [U.Word a])] -> [(String, String,
 tTest pr = let flatten (a, b, (c, d)) = (a, b, c, d)
            in map flatten . twoSampleTest (Pr.twoSampleProcess pr studentTPValue)
 
+meanConfidenceIntervals :: Double -> ([U.Word a] -> S.Sample) -> [(String, [U.Word a])] -> [(String, Double, Double)]
+meanConfidenceIntervals conf pr datasets = do (name, data_) <- datasets
+                                              let sample = pr data_
+                                              (lower, upper) <- U.eitherToList $ meanConfidenceInterval conf sample
+                                              return (name, lower, upper)
+
 {-
 class SampleTest t where
   getPValue :: t -> S.Sample -> Double
