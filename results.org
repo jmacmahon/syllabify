@@ -1,14 +1,9 @@
 * To-do
 - Means for Qs:
-  - 1
-  - 2
-  - 3
   - 5
   - 9
   - 13
   - 14
-- Q4 length in sylls.
-- For each set, graph of Q4
 
 * List of questions
 Do words differ across datasets wrt.:
@@ -52,7 +47,7 @@ With regard to the hypothesis tests:
 *** Mean confidence intervals
 |              | Lower bound | Upper bound |
 |--------------+-------------+-------------|
-| elicited     |        2.58 |        3.26 |
+| elicited     |        2.55 |        3.23 |
 | real         |        2.10 |        2.18 |
 | carroll_lear |        2.34 |        2.84 |
 | hitchhikers  |        2.16 |        2.58 |
@@ -83,12 +78,12 @@ With regard to the hypothesis tests:
 *** Mean confidence intervals
 |              | Lower bound | Upper bound |
 |--------------+-------------+-------------|
-| elicited     |        2.58 |        3.26 |
-| real         |        2.10 |        2.18 |
-| carroll_lear |        2.34 |        2.84 |
-| hitchhikers  |        2.16 |        2.58 |
-| dahl_rowling |        2.45 |        2.82 |
-| gullivers    |        2.14 |        2.52 |
+| elicited     |        6.92 |        8.42 |
+| real         |        5.77 |        5.95 |
+| carroll_lear |        6.59 |        7.87 |
+| hitchhikers  |        6.31 |        7.36 |
+| dahl_rowling |        7.03 |        8.15 |
+| gullivers    |        6.77 |        7.85 |
 
 *** T-Tests
 | Sample 1     | Sample 2     | Significant? | Results             |  p-value |
@@ -115,12 +110,12 @@ Higher means more consonants per vowel.
 
 |              | Lower bound | Upper bound |
 |--------------+-------------+-------------|
-| elicited     |        2.58 |        3.26 |
-| real         |        2.10 |        2.18 |
-| carroll_lear |        2.34 |        2.84 |
-| hitchhikers  |        2.16 |        2.58 |
-| dahl_rowling |        2.45 |        2.82 |
-| gullivers    |        2.14 |        2.52 |
+| elicited     |        1.68 |        2.24 |
+| real         |        1.42 |        1.48 |
+| carroll_lear |        1.77 |        2.35 |
+| hitchhikers  |        1.57 |        2.02 |
+| dahl_rowling |        1.72 |        2.26 |
+| gullivers    |        1.71 |        2.15 |
 
 *** T-Tests
 | Sample 1     | Sample 2     | Significant? | Results             | p-value |

@@ -42,6 +42,9 @@ eitherToList :: Either a b -> [b]
 eitherToList (Left  _) = []
 eitherToList (Right a) = [a]
 
+fromEither :: b -> Either a b -> b
+fromEither v = either (const v) id
+
 -- ADT for a Syllable.
 data Stress = NoStress | Secondary | Primary deriving (Eq, Show, Ord, Enum)
 

@@ -7,7 +7,9 @@ import qualified Linguisticks.Statistics.Analysis as An
 import qualified Linguisticks.Statistics.Processing as Pr
 
 import Text.Parsec.Error ( ParseError )
-import Text.Printf ( printf )
+import Text.Printf ( printf, PrintfType )
+import Data.List ( groupBy, sortBy )
+import Data.Char ( ord )
 
 type PS = [U.ParsedWord U.Syllables]
 
@@ -48,6 +50,9 @@ printTests res = do results <- res
 
 runTests pr = printTests $ fmap (An.tTest pr) parsed_all
 
+formatConfPython :: PrintfType t => (String, Double, Double) -> t
+formatConfPython (n, u, l) = printf "('%s', %f, %f)," n u l
+
 formatConfidence (n, u, l) = printf "| %s | %.2f | %.2f |\n" n u l
 formatParamConfidence (c, n, u, l) = printf "| %s | %s | %.3f | %.3f |\n" c n u l
 
@@ -62,7 +67,15 @@ runParametrisedMeans pr params = do parsed <- parsed_all
                                                      let result = do r <- An.meanConfidenceIntervals 0.99 (pr param) parsed
                                                                      return $ (\(n, u, l) -> (param, n, u, l)) r
                                                      result
-                                    sequence_ $ map formatParamConfidence results
+                                    let mycompare (_, n1, _, _) (_, n2, _, _) = compare n1 n2
+                                        myeq a b = EQ == mycompare a b
+                                        groupedResults' = groupBy myeq $ sortBy mycompare results
+                                        groupedResults :: [(String, [(String, Double, Double)])]
+                                        groupedResults = do result <- groupedResults'
+                                                            let dataset = (\(_, n, _, _) -> n) $ head result
+                                                                stripped = map (\(p, _, u, l) -> (p, u, l)) result
+                                                            return (dataset, stripped)
+                                    return groupedResults
 
 runParametrisedTests pr params = do parsed <- parsed_all
                                     let results :: [(String, String, String, Double, Ordering)]
@@ -73,7 +86,7 @@ runParametrisedTests pr params = do parsed <- parsed_all
                                                      filteredResult
                                     sequence_ $ map formatParam $ results
 
-main = runParametrisedMeans (Pr.sampleConsonantRatio . head) (map return Pr.consonants)
+--main = runParametrisedMeans (Pr.sampleConsonantRatio) (Pr.consonants)
 
 {-
 main = sequence_ $ map putStrLn [ons ++ nuc ++ cod | ons <- Par.validOnsets, nuc <- Par.validNuclei, cod <- Par.validCodas]

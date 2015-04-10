@@ -25,7 +25,8 @@ tTest pr = let flatten (a, b, (c, d)) = (a, b, c, d)
 meanConfidenceIntervals :: Double -> ([U.Word a] -> S.Sample) -> [(String, [U.Word a])] -> [(String, Double, Double)]
 meanConfidenceIntervals conf pr datasets = do (name, data_) <- datasets
                                               let sample = pr data_
-                                              (lower, upper) <- U.eitherToList $ meanConfidenceInterval conf sample
+                                                  eitherConfInterval = meanConfidenceInterval conf sample
+                                                  (lower, upper) = U.fromEither (0.0, 0.0) eitherConfInterval
                                               return (name, lower, upper)
 
 {-
