@@ -18,6 +18,9 @@ buildSample f ws = let listResults []     = []
                    in V.fromList (listResults ws)
 -}
 
+twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
+twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)
+
 sampleLengths :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleLengths = buildSyllablesSample (fromIntegral . length . U.syllsToList)
 
@@ -48,6 +51,14 @@ consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTransc
 
 sampleConsonantRatio :: Char -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleConsonantRatio c = V.fromList . map (consonantRatio c)
+
+gatherSyllables :: [U.ParsedWord U.Syllables] -> [(String, String, String, U.Stress)]
+gatherSyllables []     = []
+gatherSyllables (w:ws) = let wSylls = U.wordSyllables w
+                             sylls = U.syllsToList $ U.fromRight wSylls
+                         in if U.isLeft wSylls
+                            then gatherSyllables ws
+                            else sylls ++ (gatherSyllables ws)
 
 sampleSchwa :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleSchwa = let gatherSchwa :: [U.Syllables] -> [Double]
@@ -95,5 +106,10 @@ sampleOnsetCluster = sampleCluster (\(o, _, _, _) -> o)
 sampleCodaCluster :: String -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleCodaCluster = sampleCluster (\(_, _, c, _) -> c)
 
-twoSampleProcess :: (a -> S.Sample) -> (S.Sample -> S.Sample -> b) -> a -> a -> b
-twoSampleProcess processor test a1 a2 = test (processor a1) (processor a2)
+getClusters :: (String, String, String, U.Stress) -> [Double]
+getClusters (o, _, c, _) = let onsCluster = if 1 < length o then 1 else 0
+                               codCluster = if 1 < length c then 1 else 0
+                           in [onsCluster, codCluster]
+
+sampleClusters :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleClusters = V.fromList . concat . map getClusters . gatherSyllables

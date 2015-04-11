@@ -585,3 +585,33 @@ Higher means more consonants per vowel.
 | zd      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
 | zd      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
 | zd      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+* Question 17
+
+** Mean confidence intervals
+|              | Lower bound | Upper bound |
+|--------------+-------------+-------------|
+| elicited     |        0.09 |        0.16 |
+| real         |        0.11 |        0.12 |
+| carroll_lear |        0.10 |        0.18 |
+| hitchhikers  |        0.14 |        0.21 |
+| dahl_rowling |        0.12 |        0.21 |
+| gullivers    |        0.15 |        0.25 |
+
+** T-Tests
+| Sample 1     | Sample 2     | Significant? | Result                   | p-value |
+|--------------+--------------+--------------+--------------------------+---------|
+| elicited     | real         | No           | N/A                      | 2.10e-1 |
+| elicited     | carroll_lear | No           | N/A                      | 2.45e-1 |
+| elicited     | hitchhikers  | No           | N/A                      | 6.03e-3 |
+| elicited     | dahl_rowling | No           | N/A                      | 3.06e-2 |
+| elicited     | gullivers    | Yes          | elicited < gullivers     | 3.60e-4 |
+| real         | carroll_lear | No           | N/A                      | 5.59e-2 |
+| real         | hitchhikers  | Yes          | real < hitchhikers       | 2.60e-5 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling      | 1.16e-3 |
+| real         | gullivers    | Yes          | real < gullivers         | 1.24e-6 |
+| carroll_lear | hitchhikers  | No           | N/A                      | 4.74e-2 |
+| carroll_lear | dahl_rowling | No           | N/A                      | 1.31e-1 |
+| carroll_lear | gullivers    | Yes          | carroll_lear < gullivers | 4.65e-3 |
+| hitchhikers  | dahl_rowling | No           | N/A                      | 3.15e-1 |
+| hitchhikers  | gullivers    | No           | N/A                      | 1.29e-1 |
+| dahl_rowling | gullivers    | No           | N/A                      | 6.45e-2 |
