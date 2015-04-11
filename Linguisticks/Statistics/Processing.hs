@@ -113,3 +113,11 @@ getClusters (o, _, c, _) = let onsCluster = if 1 < length o then 1 else 0
 
 sampleClusters :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleClusters = V.fromList . concat . map getClusters . gatherSyllables
+
+getHeaviness :: (String, String, String, U.Stress) -> Double
+getHeaviness (_, n, c, _) = let filteredNucleus = filter (/= '\809') n
+                                segments = (length filteredNucleus) + (length c)
+                            in if segments > 1 then 1 else 0
+
+sampleHeaviness :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleHeaviness = V.fromList . map getHeaviness . gatherSyllables

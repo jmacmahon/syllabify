@@ -21,8 +21,8 @@ parsed_dahl_rowling = C.readParsedWords "data/dahl_rowling_parsed.csv"
 parsed_gullivers = C.readParsedWords "data/gullivers_parsed.csv"
 
 parsed_all :: IO [(String, PS)]
-parsed_all = U.sequenceSecond $ [ ("elicited", parsed_elicited)
-                                , ("real", parsed_real)
+parsed_all = U.sequenceSecond $ [ ("real", parsed_real)
+                                , ("elicited", parsed_elicited)
                                 , ("carroll_lear", parsed_carroll_lear)
                                 , ("hitchhikers", parsed_hitchhikers)
                                 , ("dahl_rowling", parsed_dahl_rowling)
