@@ -21,6 +21,11 @@ choose n ss = let splits = [0..(length ss - 1)]
                     rest <- choose (n-1) (tail bot)
                     return $ (head bot):rest
 
+map2 :: (a -> a -> b) -> [a] -> [b]
+map2 f = let map2' [_] = []
+             map2' (a:b:xs) = (f a b):(map2' (b:xs))
+         in map2'
+
 fromRight :: Either a b -> b
 fromRight (Right b) = b
 
@@ -41,6 +46,7 @@ maybeP parser = do parsed <- parser
 eitherToList :: Either a b -> [b]
 eitherToList (Left  _) = []
 eitherToList (Right a) = [a]
+-- eitherToList = rights . return
 
 fromEither :: b -> Either a b -> b
 fromEither v = either (const v) id
@@ -58,7 +64,9 @@ data Syllables = Syllables { syllOnset :: String,
                              syllNext :: Maybe Syllables
                            } deriving (Eq)
 
-syllsToList :: Syllables -> [(String, String, String, Stress)]
+type Syllable = (String, String, String, Stress)
+
+syllsToList :: Syllables -> [Syllable]
 syllsToList s@(Syllables ons nuc cod stress next) | isNothing next = [(ons, nuc, cod, stress)]
                                                   | otherwise      = (ons, nuc, cod, stress):(syllsToList $ fromJust next)
 

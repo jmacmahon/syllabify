@@ -52,7 +52,7 @@ consonantRatio c w = let consonantLength = length $ filter (== c) $ U.wordTransc
 sampleConsonantRatio :: Char -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleConsonantRatio c = V.fromList . map (consonantRatio c)
 
-gatherSyllables :: [U.ParsedWord U.Syllables] -> [(String, String, String, U.Stress)]
+gatherSyllables :: [U.ParsedWord U.Syllables] -> [U.Syllable]
 gatherSyllables []     = []
 gatherSyllables (w:ws) = let wSylls = U.wordSyllables w
                              sylls = U.syllsToList $ U.fromRight wSylls
@@ -71,7 +71,7 @@ sampleSchwa = let gatherSchwa :: [U.Syllables] -> [Double]
                                        in schwaCounts ++ (gatherSchwa ss)
                         in V.fromList . gatherSchwa . rights . map U.wordSyllables
 
-sampleConsonants :: ((String, String, String, U.Stress) -> String) -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleConsonants :: (U.Syllable -> String) -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleConsonants f = let gatherConsonants :: [U.Syllables] -> [Double]
                          gatherConsonants []     = []
                          gatherConsonants (s:ss) = let sylls = U.syllsToList s
@@ -86,7 +86,7 @@ sampleCodaConsonants = sampleConsonants (\(_, _, c, _) -> c)
 sampleOnsetConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleOnsetConsonants = sampleConsonants (\(o, _, _, _) -> o)
 
-sampleCluster :: ((String, String, String, U.Stress) -> String) -> String -> [U.ParsedWord U.Syllables] -> S.Sample
+sampleCluster :: (U.Syllable -> String) -> String -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleCluster f cluster = let gatherClusters :: [U.Syllables] -> [Double]
                               gatherClusters []     = []
                               gatherClusters (s:ss) = let sylls = U.syllsToList s
@@ -106,7 +106,7 @@ sampleOnsetCluster = sampleCluster (\(o, _, _, _) -> o)
 sampleCodaCluster :: String -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleCodaCluster = sampleCluster (\(_, _, c, _) -> c)
 
-getClusters :: (String, String, String, U.Stress) -> [Double]
+getClusters :: U.Syllable -> [Double]
 getClusters (o, _, c, _) = let onsCluster = if 1 < length o then 1 else 0
                                codCluster = if 1 < length c then 1 else 0
                            in [onsCluster, codCluster]
@@ -114,10 +114,17 @@ getClusters (o, _, c, _) = let onsCluster = if 1 < length o then 1 else 0
 sampleClusters :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleClusters = V.fromList . concat . map getClusters . gatherSyllables
 
-getHeaviness :: (String, String, String, U.Stress) -> Double
+getHeaviness :: U.Syllable -> Double
 getHeaviness (_, n, c, _) = let filteredNucleus = filter (/= '\809') n
                                 segments = (length filteredNucleus) + (length c)
                             in if segments > 1 then 1 else 0
 
 sampleHeaviness :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleHeaviness = V.fromList . map getHeaviness . gatherSyllables
+
+getCrossConsCluster :: U.Syllable -> U.Syllable -> String
+getCrossConsCluster (_, _, c, _) (o, _, _, _) | c == "" || o == "" = ""
+                                              | otherwise          = c ++ o
+
+sampleCrossConsClusters :: [U.ParsedWord U.Syllables] -> S.Sample
+sampleCrossConsClusters = V.fromList . map (\s -> if null s then 0 else 1) . concat . map (U.map2 getCrossConsCluster . U.syllsToList) . rights . map U.wordSyllables

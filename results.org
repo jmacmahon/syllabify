@@ -628,6 +628,38 @@ This is the proportion of syllables that are heavy.
 | zd      | real         | hitchhikers  | Yes          | real > hitchhikers          |  2.33e-3 |
 | zd      | real         | dahl_rowling | Yes          | real > dahl_rowling         |  2.33e-3 |
 | zd      | real         | gullivers    | Yes          | real > gullivers            |  2.33e-3 |
+* Question 15
+Proportion of syllable boundaries that contained cross-syllabic consonant clusters
+
+** Mean confidence intervals
+|              | Lower bound | Upper bound |
+|--------------+-------------+-------------|
+| real         |        0.24 |        0.27 |
+| elicited     |        0.16 |        0.32 |
+| carroll_lear |        0.21 |        0.41 |
+| hitchhikers  |        0.19 |        0.36 |
+| dahl_rowling |        0.30 |        0.50 |
+| gullivers    |        0.36 |        0.58 | 
+
+** T-tests
+| Sample 1     | Sample 2     | Significant? | Result                   | p-value |
+|--------------+--------------+--------------+--------------------------+---------|
+| real         | elicited     | No           | N/A                      | 3.97e-1 |
+| real         | carroll_lear | No           | N/A                      | 5.57e-2 |
+| real         | hitchhikers  | No           | N/A                      | 2.86e-1 |
+| real         | dahl_rowling | Yes          | real < dahl_rowling      | 1.39e-4 |
+| real         | gullivers    | Yes          | real < gullivers         | 9.94e-7 |
+| elicited     | carroll_lear | No           | N/A                      | 7.67e-2 |
+| elicited     | hitchhikers  | No           | N/A                      | 2.74e-1 |
+| elicited     | dahl_rowling | Yes          | elicited < dahl_rowling  | 9.77e-4 |
+| elicited     | gullivers    | Yes          | elicited < gullivers     | 1.63e-5 |
+| carroll_lear | hitchhikers  | No           | N/A                      | 1.95e-1 |
+| carroll_lear | dahl_rowling | No           | N/A                      | 6.01e-2 |
+| carroll_lear | gullivers    | Yes          | carroll_lear < gullivers | 4.14e-3 |
+| hitchhikers  | dahl_rowling | No           | N/A                      | 6.01e-3 |
+| hitchhikers  | gullivers    | Yes          | hitchhikers < gullivers  | 1.60e-4 |
+| dahl_rowling | gullivers    | No           | N/A                      | 1.23e-1 |
+
 * Question 17
 
 ** Mean confidence intervals
