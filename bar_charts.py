@@ -87,13 +87,22 @@ schwa_data = [
     #("gullivers",5.557458101987428e-2,0.16087563543034217)
 ]
 
+clusters_data = [
+    ("real",0.10573421446726129,0.11762094277219347),
+    ("elicited",8.766849525272485e-2,0.1580062452317042),
+    ("carroll_lear",9.626749396621197e-2,0.17841061762177085),
+    #("hitchhikers",0.1350810199926168,0.21316179150898068),
+    ("dahl_rowling",0.12025625299386947,0.20627435925102847),
+    #("gullivers",0.15324699946074566,0.24935040313665696)
+]
+
 cross_clusters_data = [
     ("real",0.23585314420766293,0.26756737893117005),
     ("elicited",0.1629834184441425,0.32378906832834425),
     ("carroll_lear",0.2146548426714494,0.41471578669917997),
     #("hitchhikers",0.18564670610096762,0.3557897579874301),
     ("dahl_rowling",0.2989069814303861,0.5037245975169824),
-    #("gullivers",0.3578044516147934,0.5815894877791461),
+    #("gullivers",0.3578044516147934,0.5815894877791461)
 ]
 
 def test():
@@ -107,6 +116,7 @@ def test():
         (coda_consonants_data, 'number of consonants in codas'),
         (schwa_data, 'proportion of nucleuses filled by schwa'),
         (heaviness_data, 'proportion of heavy syllables'),
+        (clusters_data, 'proportion of onsets/codas containing clusters'),
         (cross_clusters_data, 'proportion of cross-consonant clusters in syllable boundaries')
     ]
     for (data, word) in graphs:

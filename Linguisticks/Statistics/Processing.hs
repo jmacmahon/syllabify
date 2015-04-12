@@ -87,18 +87,7 @@ sampleOnsetConsonants :: [U.ParsedWord U.Syllables] -> S.Sample
 sampleOnsetConsonants = sampleConsonants (\(o, _, _, _) -> o)
 
 sampleCluster :: (U.Syllable -> String) -> String -> [U.ParsedWord U.Syllables] -> S.Sample
-sampleCluster f cluster = let gatherClusters :: [U.Syllables] -> [Double]
-                              gatherClusters []     = []
-                              gatherClusters (s:ss) = let sylls = U.syllsToList s
-                                                          subsylls = map f sylls
-                                                          clusterCount :: [Double]
-                                                          clusterCount = map
-                                                                         (fromIntegral
-                                                                          . fromEnum
-                                                                          . (== cluster))
-                                                                         subsylls
-                                                      in clusterCount ++ (gatherClusters ss)
-                          in V.fromList . gatherClusters . rights . map U.wordSyllables
+sampleCluster f cluster = V.fromList . map ((\b -> if b then 1 else 0) . (== cluster) . f) . gatherSyllables
 
 sampleOnsetCluster :: String -> [U.ParsedWord U.Syllables] -> S.Sample
 sampleOnsetCluster = sampleCluster (\(o, _, _, _) -> o)

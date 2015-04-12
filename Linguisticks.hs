@@ -9,7 +9,7 @@ import qualified Linguisticks.Statistics.Processing as Pr
 import Text.Parsec.Error ( ParseError )
 import Text.Printf ( printf, PrintfType )
 import Data.List ( groupBy, sortBy )
-import Data.Char ( ord )
+import Data.Char ( ord, chr )
 
 type PS = [U.ParsedWord U.Syllables]
 
